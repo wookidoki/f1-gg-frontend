@@ -39,7 +39,6 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
                     ))}
                 </MenuList>
 
-                {/* 버튼들을 ActionGroup으로 묶어야 우측 정렬이 깔끔합니다 */}
                 <ActionGroup>
                     <ThemeButton onClick={toggleTheme}>
                         {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}

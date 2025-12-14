@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { Search, User, Trophy } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-// 스타일 컴포넌트 임포트
+// 스타일 컴포넌트 임포트 (파일명이 style.js 라고 가정)
 import { 
   PageContainer, Header, Title, SearchBar, SearchInput, 
   GridContainer, DriverCard, TeamColorBar, DriverNumber, 
   DriverInfo, DriverName, TeamName, StatsRow, StatItem 
-} from './stlye';
-
-import { useNavigate } from 'react-router-dom';
-
+} from './style'; 
 
 const Drivers = () => {
   // 검색 상태 관리
