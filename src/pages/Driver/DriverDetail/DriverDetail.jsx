@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Trophy, Zap, ArrowLeft, Crown, Calendar, Flag, Hash
 } from 'lucide-react';
@@ -15,8 +15,10 @@ import {
 const DriverDetail = () => {
   const { code } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const season = searchParams.get('season') || '2025';
 
-  const { driver, loading, error } = useDriverDetail(code);
+  const { driver, loading, error } = useDriverDetail(code, season);
 
   if (loading) return <DetailContainer style={{padding:'2rem', color:'white'}}>Loading...</DetailContainer>;
 
@@ -117,7 +119,7 @@ const DriverDetail = () => {
       {/* 시즌 결과 */}
       {driver.seasonResults && driver.seasonResults.length > 0 && (
         <ContentSection>
-          <SectionTitle><Calendar size={20}/> 2024 시즌 결과</SectionTitle>
+          <SectionTitle><Calendar size={20}/> {season} 시즌 결과</SectionTitle>
           <div style={{ marginTop: '1rem', maxHeight: '400px', overflowY: 'auto' }}>
             {driver.seasonResults.map((race) => (
               <div

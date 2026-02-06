@@ -69,7 +69,7 @@ const Drivers = () => {
         {filteredDrivers.map((driver) => (
           <DriverCard 
             key={driver.code} // 고유 ID 사용 (max_verstappen)
-            onClick={() => navigate(`/drivers/${driver.code}`)}
+            onClick={() => navigate(`/drivers/${driver.code}?season=${season}`)}
           >
             <TeamColorBar $color={driver.teamColor} />
             

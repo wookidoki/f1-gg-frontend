@@ -76,7 +76,7 @@ const Standings = () => {
             <Flag size={18} /> LAST RACE RESULT
           </SectionTitle>
 
-          <HeroRaceCard onClick={() => navigate(`/race/${lastRace.round}`)}>
+          <HeroRaceCard onClick={() => navigate(`/race/${lastRace.round}?season=${season}`)}>
             <div className="bg-overlay" />
             <HeroContent>
               <div className="race-info">
@@ -111,7 +111,7 @@ const Standings = () => {
         {recentRaces.map((race) => (
           <RaceItem
             key={race.round}
-            onClick={() => race.status === 'FINISHED' ? navigate(`/race/${race.round}`) : null}
+            onClick={() => race.status === 'FINISHED' ? navigate(`/race/${race.round}?season=${season}`) : null}
             $isUpcoming={race.status === 'UPCOMING'}
           >
             <div className="left">

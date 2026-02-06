@@ -170,8 +170,9 @@ export const ResultTable = styled.table`
   }
   
   .pos { font-weight: 800; display: flex; align-items: center; gap: 8px; font-style: italic; }
-  .driver { font-weight: 700; }
-  .team { color: ${(props) => props.theme.subText}; font-size: 0.85rem; }
+  .driver { font-weight: 700; display: flex; align-items: center; }
+  .team { font-size: 0.85rem; font-weight: 600; }
+  .grid { font-size: 0.9rem; }
   .pts { font-weight: 800; color: ${(props) => props.theme.colors.primary}; }
 
   /* 1,2,3위 배경 하이라이트 */

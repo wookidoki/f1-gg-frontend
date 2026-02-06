@@ -1,51 +1,56 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { 
-  ArrowLeft, Trophy, MapPin, Users, Wrench, BarChart2, Zap 
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  ArrowLeft, Trophy, MapPin, Users, Zap, Calendar
 } from 'lucide-react';
-import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
-} from 'recharts';
+import { API_BASE_URL, getFlagEmoji } from '../../../config';
 
-import { 
-  DetailContainer, BackButton, HeroSection, TeamLogoLarge, 
-  InfoGrid, InfoCard, TechSpecSection, SpecItem, 
-  ChartSection, SectionTitle, DriverLinkBox
+import {
+  DetailContainer, BackButton, HeroSection, TeamLogoLarge,
+  InfoGrid, InfoCard, SectionTitle, DriverLinkBox
 } from './style';
 
 const TeamDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const season = searchParams.get('season') || '2025';
 
-  // Mock Data: 레드불 레이싱 예시
-  const teamData = {
-    id: 1,
-    name: "Red Bull Racing",
-    fullName: "Oracle Red Bull Racing",
-    base: "Milton Keynes, United Kingdom",
-    principal: "Christian Horner",
-    powerUnit: "Honda RBPTH002",
-    chassis: "RB20",
-    color: "#0600EF",
-    stats: {
-      titles: 6,
-      wins: 113,
-      poles: 98,
-      fastestLaps: 95
-    },
-    drivers: [
-      { name: "Max Verstappen", number: 1 },
-      { name: "Sergio Perez", number: 11 }
-    ],
-    // 최근 5년 포인트 추이
-    history: [
-      { year: '2019', points: 417 },
-      { year: '2020', points: 319 },
-      { year: '2021', points: 585.5 },
-      { year: '2022', points: 759 },
-      { year: '2023', points: 860 },
-    ]
-  };
+  const [teamData, setTeamData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`${API_BASE_URL}/constructors/${id}?season=${season}`)
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          setTeamData(response.data);
+        } else {
+          setError(response.message || '팀 정보를 불러올 수 없습니다.');
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Fetch Error:", err);
+        setError('데이터를 불러오는 중 오류가 발생했습니다.');
+        setLoading(false);
+      });
+  }, [id, season]);
+
+  if (loading) return <DetailContainer style={{padding:'2rem', color:'white'}}>Loading...</DetailContainer>;
+
+  if (error || !teamData) {
+    return (
+      <DetailContainer>
+        <BackButton onClick={() => navigate(-1)}>
+          <ArrowLeft size={20} /> 뒤로 가기
+        </BackButton>
+        <h3 style={{color:'white', marginTop:'2rem'}}>{error || '팀을 찾을 수 없습니다.'}</h3>
+      </DetailContainer>
+    );
+  }
 
   return (
     <DetailContainer>
@@ -56,12 +61,12 @@ const TeamDetail = () => {
       {/* 1. 히어로 섹션 (팀 아이덴티티) */}
       <HeroSection $color={teamData.color}>
         <div style={{ zIndex: 2 }}>
-          <h2 style={{ opacity: 0.8, fontWeight: 600 }}>F1 CONSTRUCTOR</h2>
+          <h2 style={{ opacity: 0.8, fontWeight: 600 }}>{season} F1 CONSTRUCTOR</h2>
           <h1 style={{ fontSize: '3rem', fontStyle: 'italic', fontWeight: 900, margin: '10px 0' }}>
-            {teamData.name}
+            {teamData.nameKr}
           </h1>
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px', opacity: 0.9 }}>
-            <MapPin size={18} /> {teamData.base}
+            {getFlagEmoji(teamData.nationality)} {teamData.name}
           </p>
         </div>
         <TeamLogoLarge>{teamData.name[0]}</TeamLogoLarge>
@@ -73,86 +78,128 @@ const TeamDetail = () => {
           <Trophy size={24} color="#FFD700" />
           <div>
             <span>컨스트럭터 챔피언</span>
-            <strong>{teamData.stats.titles}회</strong>
+            <strong>{teamData.careerStats?.championships || 0}회</strong>
           </div>
         </InfoCard>
         <InfoCard>
           <Zap size={24} color={teamData.color} />
           <div>
-            <span>그랑프리 우승</span>
-            <strong>{teamData.stats.wins}회</strong>
+            <span>그랑프리 우승 (통산)</span>
+            <strong>{teamData.careerStats?.wins || 0}회</strong>
           </div>
         </InfoCard>
         <InfoCard>
-          <BarChart2 size={24} />
+          <Calendar size={24} />
           <div>
-            <span>폴 포지션</span>
-            <strong>{teamData.stats.poles}회</strong>
+            <span>F1 참가 시즌</span>
+            <strong>{teamData.careerStats?.seasons || 0}시즌</strong>
           </div>
         </InfoCard>
       </InfoGrid>
 
-      {/* 3. 머신(차량) 테크니컬 스펙 */}
-      <TechSpecSection>
-        <SectionTitle><Wrench size={22} /> 2024 MACHINE TECH SPEC</SectionTitle>
-        <div className="spec-grid">
-          <SpecItem>
-            <span className="label">CHASSIS</span>
-            <span className="value">{teamData.chassis}</span>
-          </SpecItem>
-          <SpecItem>
-            <span className="label">POWER UNIT</span>
-            <span className="value">{teamData.powerUnit}</span>
-          </SpecItem>
-          <SpecItem>
-            <span className="label">TEAM PRINCIPAL</span>
-            <span className="value">{teamData.principal}</span>
-          </SpecItem>
+      {/* 3. 현재 시즌 성적 */}
+      <div style={{
+        background: 'rgba(255,255,255,0.05)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: '16px',
+        padding: '1.5rem',
+        marginBottom: '2rem'
+      }}>
+        <SectionTitle><Trophy size={20} color="#e10600" /> {season} 시즌 성적</SectionTitle>
+        <div style={{ display: 'flex', gap: '3rem', marginTop: '1rem' }}>
+          <div>
+            <div style={{ fontSize: '0.85rem', opacity: 0.7 }}>순위</div>
+            <div style={{ fontSize: '2.5rem', fontWeight: '900' }}>{teamData.currentRank}위</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '0.85rem', opacity: 0.7 }}>포인트</div>
+            <div style={{ fontSize: '2.5rem', fontWeight: '900', color: '#e10600' }}>{teamData.currentPoints}</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '0.85rem', opacity: 0.7 }}>시즌 우승</div>
+            <div style={{ fontSize: '2.5rem', fontWeight: '900', color: teamData.currentWins > 0 ? '#f1c40f' : 'inherit' }}>
+              {teamData.currentWins > 0 ? teamData.currentWins : '-'}
+            </div>
+          </div>
         </div>
-      </TechSpecSection>
-
-      {/* 4. 시즌 포인트 추이 차트 */}
-      <ChartSection>
-        <SectionTitle><BarChart2 size={22} /> 최근 5년 포인트 퍼포먼스</SectionTitle>
-        <div style={{ width: '100%', height: '300px', marginTop: '1rem' }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={teamData.history}>
-              <defs>
-                <linearGradient id="colorPoints" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={teamData.color} stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor={teamData.color} stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#444" vertical={false} />
-              <XAxis dataKey="year" tick={{fill: '#888'}} axisLine={false} tickLine={false} />
-              <YAxis tick={{fill: '#888'}} axisLine={false} tickLine={false} />
-              <Tooltip 
-                contentStyle={{ backgroundColor: '#222', border: 'none', borderRadius: '8px' }}
-                itemStyle={{ color: '#fff' }}
-              />
-              <Area 
-                type="monotone" 
-                dataKey="points" 
-                stroke={teamData.color} 
-                fillOpacity={1} 
-                fill="url(#colorPoints)" 
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </ChartSection>
-      
-      {/* 5. 소속 드라이버 링크 (간단하게) */}
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
-        {teamData.drivers.map((driver) => (
-          <DriverLinkBox key={driver.number} onClick={() => navigate('/drivers')}>
-            <Users size={16} /> 
-            <span>{driver.name}</span>
-            <strong>#{driver.number}</strong>
-          </DriverLinkBox>
-        ))}
       </div>
 
+      {/* 4. 소속 드라이버 */}
+      {teamData.drivers && teamData.drivers.length > 0 && (
+        <div style={{ marginBottom: '2rem' }}>
+          <SectionTitle style={{ marginBottom: '1rem' }}><Users size={20} /> 소속 드라이버</SectionTitle>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            {teamData.drivers.map((driver) => (
+              <DriverLinkBox
+                key={driver.code}
+                onClick={() => navigate(`/drivers/${driver.code}?season=${season}`)}
+              >
+                {getFlagEmoji(driver.nationality)}
+                <span>{driver.nameKr}</span>
+                <strong>#{driver.number}</strong>
+                <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>P{driver.rank} • {driver.points}pts</span>
+              </DriverLinkBox>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 5. 시즌 결과 */}
+      {teamData.seasonResults && teamData.seasonResults.length > 0 && (
+        <div>
+          <SectionTitle style={{ marginBottom: '1rem' }}><Calendar size={20} /> {season} 시즌 결과</SectionTitle>
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+            {teamData.seasonResults.map((race) => (
+              <div
+                key={race.round}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '1rem',
+                  borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  background: parseInt(race.points) >= 20 ? 'rgba(241, 196, 15, 0.1)' : 'transparent'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <span style={{ fontSize: '0.85rem', opacity: 0.5, width: '40px' }}>R{race.round}</span>
+                  <div>
+                    <div style={{ fontWeight: '600' }}>{race.raceNameKr}</div>
+                    <div style={{ fontSize: '0.8rem', opacity: 0.5 }}>{race.date}</div>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                  {/* 드라이버별 결과 */}
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    {race.driverResults.map(dr => (
+                      <span
+                        key={dr.code}
+                        style={{
+                          background: 'rgba(255,255,255,0.1)',
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          fontSize: '0.8rem'
+                        }}
+                      >
+                        {dr.code} P{dr.position}
+                      </span>
+                    ))}
+                  </div>
+                  <div style={{
+                    background: 'rgba(255,255,255,0.1)',
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    fontSize: '0.85rem',
+                    fontWeight: '600'
+                  }}>
+                    +{race.points} pts
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </DetailContainer>
   );
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from '../../../config';
 
-export const useDriverDetail = (code) => {
+export const useDriverDetail = (code, season = '2025') => {
   const [driver, setDriver] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ export const useDriverDetail = (code) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`${API_BASE_URL}/drivers/${code}`);
+        const response = await fetch(`${API_BASE_URL}/drivers/${code}?season=${season}`);
 
         if (!response.ok) {
           throw new Error('드라이버 정보를 찾을 수 없습니다.');
@@ -36,7 +36,7 @@ export const useDriverDetail = (code) => {
     };
 
     fetchData();
-  }, [code]);
+  }, [code, season]);
 
   return { driver, loading, error };
 };

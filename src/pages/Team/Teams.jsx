@@ -65,7 +65,7 @@ const Teams = () => {
           <TeamCard
             key={team.constructorId}
             $teamColor={team.color}
-            onClick={() => navigate(`/teams/${team.constructorId}`)}
+            onClick={() => navigate(`/teams/${team.constructorId}?season=${season}`)}
           >
             <TeamHeader>
               <TeamLogoPlaceholder $color={team.color}>
