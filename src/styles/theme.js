@@ -43,22 +43,30 @@ const common = {
 
 export const lightTheme = {
   ...common,
-  bg: '#f3f4f6',              // 너무 쨍한 흰색보다 살짝 톤다운된 쿨그레이 추천
+  bg: '#f5f5f7',              // 애플 스타일 밝은 회색
   cardBg: '#ffffff',
-  text: '#111827',            // 완전 검정보다 짙은 회색이 눈이 편함
-  subText: '#6b7280',
-  border: '#e5e7eb',
-  navBg: 'rgba(255, 255, 255, 0.85)',
-  shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', // 부드러운 그림자
+  text: '#1d1d1f',            // 애플 스타일 텍스트
+  subText: '#86868b',
+  border: '#d2d2d7',
+  navBg: 'rgba(255, 255, 255, 0.72)',
+  shadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+  // 라이트 모드 전용
+  cardHover: '#fafafa',
+  inputBg: '#f5f5f7',
+  accent: '#0071e3',          // 강조색 (링크, 버튼)
 };
 
 export const darkTheme = {
   ...common,
-  bg: '#111111',              // 완전 검정(#000)보다는 #111 추천 (눈 피로 감소)
+  bg: '#000000',              // 진정한 OLED 블랙
   cardBg: '#1c1c1e',          // 애플 스타일의 다크모드 카드색
-  text: '#f9fafb',
-  subText: '#9ca3af',
-  border: '#2d2d2d',
-  navBg: 'rgba(28, 28, 30, 0.85)',
-  shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.5)', // 다크모드는 그림자가 더 진해야 티가 남
+  text: '#f5f5f7',
+  subText: '#86868b',
+  border: '#38383a',
+  navBg: 'rgba(0, 0, 0, 0.72)',
+  shadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
+  // 다크 모드 전용
+  cardHover: '#2c2c2e',
+  inputBg: '#1c1c1e',
+  accent: '#0a84ff',          // iOS 다크모드 블루
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sun, Moon, Zap, Calendar, Trophy, User, LogIn, LogOut, Users, BarChart2, Heart } from 'lucide-react';
 import { useAuth } from '../../../contexts/AuthContext';
+import Search from '../../common/Search/Search';
 import {
   NavWrapper, NavContent, Logo, MenuList, MenuItem,
   ActionGroup, ThemeButton, LoginButton, UserInfo
@@ -56,6 +57,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
                 </MenuList>
 
                 <ActionGroup>
+                    <Search />
                     <ThemeButton onClick={toggleTheme} aria-label="테마 변경">
                         {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
                     </ThemeButton>
