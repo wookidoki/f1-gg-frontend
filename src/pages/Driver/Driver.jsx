@@ -2,33 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Search, User, Trophy, Flag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-// 1. 전역 설정 및 헬퍼 함수 가져오기
-import { API_BASE_URL, getFlagEmoji } from '../../config'; 
+import { API_BASE_URL, getFlagEmoji } from '../../config';
+import SeasonSelector from '../../components/common/SeasonSelector/SeasonSelector';
 
-import { 
-  PageContainer, Header, Title, SearchBar, SearchInput, 
-  GridContainer, DriverCard, TeamColorBar, DriverNumber, 
-  DriverInfo, DriverName, TeamName, StatsRow, StatItem 
-} from './style'; // 경로 확인 필요
+import {
+  PageContainer, Header, Title, SearchBar, SearchInput,
+  GridContainer, DriverCard, TeamColorBar, DriverNumber,
+  DriverInfo, DriverName, TeamName, StatsRow, StatItem
+} from './style';
 
 const Drivers = () => {
   const navigate = useNavigate();
 
-  // 상태 관리
   const [searchTerm, setSearchTerm] = useState('');
-  const [drivers, setDrivers] = useState([]); // 실제 데이터 담을 곳
+  const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [season, setSeason] = useState('');
 
-  // 2. 백엔드 API 호출 (useEffect)
   useEffect(() => {
-    fetch(`${API_BASE_URL}/drivers`)
-      .then(res => {
-        if (!res.ok) throw new Error('Network response was not ok');
-        return res.json();
-      })
+    if (!season) return;
+    setLoading(true);
+    fetch(`${API_BASE_URL}/drivers?season=${season}`)
+      .then(res => res.json())
       .then(response => {
-        console.log("드라이버 데이터:", response);
-        // ResponseData 구조: { success, status, message, data }
         if (response.success) {
           setDrivers(response.data);
         }
@@ -38,7 +34,7 @@ const Drivers = () => {
         console.error("Fetch Error:", err);
         setLoading(false);
       });
-  }, []);
+  }, [season]);
 
   // 3. 검색 필터링 (한글, 영어, 팀, 코드명(VER)까지 검색 지원)
   const filteredDrivers = drivers.filter(driver => 
@@ -54,16 +50,19 @@ const Drivers = () => {
     <PageContainer>
       <Header>
         <Title>
-          <User size={28} /> 2024 <span>DRIVERS</span>
+          <User size={28} /> {season} <span>DRIVERS</span>
         </Title>
-        <SearchBar>
-          <Search size={18} style={{ opacity: 0.5 }} />
-          <SearchInput 
-            placeholder="드라이버(한글/영어), 팀, 코드(VER) 검색..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </SearchBar>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <SeasonSelector value={season} onChange={setSeason} />
+          <SearchBar>
+            <Search size={18} style={{ opacity: 0.5 }} />
+            <SearchInput
+              placeholder="드라이버, 팀, 코드 검색..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </SearchBar>
+        </div>
       </Header>
 
       <GridContainer>

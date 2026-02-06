@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Users, Zap } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
+import SeasonSelector from '../../components/common/SeasonSelector/SeasonSelector';
 
 import {
   PageContainer, Header, Title, SearchBar, SearchInput,
@@ -14,9 +15,12 @@ const Teams = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [season, setSeason] = useState('');
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/constructors`)
+    if (!season) return;
+    setLoading(true);
+    fetch(`${API_BASE_URL}/constructors?season=${season}`)
       .then(res => res.json())
       .then(response => {
         if (response.success) {
@@ -28,7 +32,7 @@ const Teams = () => {
         console.error("Fetch Error:", err);
         setLoading(false);
       });
-  }, []);
+  }, [season]);
 
   const filteredTeams = teams.filter(team =>
     team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -41,16 +45,19 @@ const Teams = () => {
     <PageContainer>
       <Header>
         <Title>
-          <Users size={28} /> F1 <span>CONSTRUCTORS</span>
+          <Users size={28} /> {season} <span>CONSTRUCTORS</span>
         </Title>
-        <SearchBar>
-          <Search size={18} style={{ opacity: 0.5 }} />
-          <SearchInput
-            placeholder="팀 이름 검색..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </SearchBar>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <SeasonSelector value={season} onChange={setSeason} />
+          <SearchBar>
+            <Search size={18} style={{ opacity: 0.5 }} />
+            <SearchInput
+              placeholder="팀 이름 검색..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </SearchBar>
+        </div>
       </Header>
 
       <GridContainer>

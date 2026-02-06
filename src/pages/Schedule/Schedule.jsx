@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Trophy, ChevronRight } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
+import SeasonSelector from '../../components/common/SeasonSelector/SeasonSelector';
 import {
   ScheduleContainer, PageHeader, RaceList, RaceCard,
   DateBox, RaceInfo, RaceAction, WinnerBadge, TicketButton
@@ -9,9 +10,12 @@ import {
 const Schedule = () => {
   const [schedule, setSchedule] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [season, setSeason] = useState('');
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/schedule`)
+    if (!season) return;
+    setLoading(true);
+    fetch(`${API_BASE_URL}/schedule?season=${season}`)
       .then(res => res.json())
       .then(response => {
         if (response.success) {
@@ -23,7 +27,7 @@ const Schedule = () => {
         console.error("Fetch Error:", err);
         setLoading(false);
       });
-  }, []);
+  }, [season]);
 
   if (loading) return <div style={{padding:'2rem', color:'white'}}>Loading...</div>;
   if (!schedule) return <div style={{padding:'2rem', color:'white'}}>데이터를 불러올 수 없습니다.</div>;
@@ -31,8 +35,13 @@ const Schedule = () => {
   return (
     <ScheduleContainer>
       <PageHeader>
-        <h2>{schedule.season} <span>SEASON</span></h2>
-        <p>전체 {schedule.totalRaces}개 그랑프리 일정 및 결과를 확인하세요.</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <div>
+            <h2>{schedule.season} <span>SEASON</span></h2>
+            <p>전체 {schedule.totalRaces}개 그랑프리 일정 및 결과를 확인하세요.</p>
+          </div>
+          <SeasonSelector value={season} onChange={setSeason} />
+        </div>
       </PageHeader>
 
       <RaceList>

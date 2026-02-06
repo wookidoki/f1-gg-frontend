@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trophy, MapPin, Flag, Calendar, ChevronRight } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
+import SeasonSelector from '../../components/common/SeasonSelector/SeasonSelector';
 
 import {
   PageContainer, TopRankSection, RankCard,
@@ -14,11 +15,14 @@ const Standings = () => {
   const [constructorStandings, setConstructorStandings] = useState([]);
   const [schedule, setSchedule] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [season, setSeason] = useState('');
 
   useEffect(() => {
+    if (!season) return;
+    setLoading(true);
     Promise.all([
-      fetch(`${API_BASE_URL}/standings/constructors`).then(res => res.json()),
-      fetch(`${API_BASE_URL}/schedule`).then(res => res.json())
+      fetch(`${API_BASE_URL}/standings/constructors?season=${season}`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/schedule?season=${season}`).then(res => res.json())
     ])
       .then(([standingsRes, scheduleRes]) => {
         if (standingsRes.success) {
@@ -33,7 +37,7 @@ const Standings = () => {
         console.error("Fetch Error:", err);
         setLoading(false);
       });
-  }, []);
+  }, [season]);
 
   if (loading) return <div style={{padding:'2rem', color:'white'}}>Loading...</div>;
 
@@ -46,9 +50,13 @@ const Standings = () => {
 
   return (
     <PageContainer>
+      {/* 시즌 선택 */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+        <SeasonSelector value={season} onChange={setSeason} />
+      </div>
 
       {/* 1. 시즌 컨스트럭터 순위 (Top 3) */}
-      <SectionTitle><Trophy size={18} /> {schedule?.season || '2024'} CONSTRUCTOR STANDINGS</SectionTitle>
+      <SectionTitle><Trophy size={18} /> {schedule?.season || season} CONSTRUCTOR STANDINGS</SectionTitle>
       <TopRankSection>
         {constructorStandings.map((entry) => (
           <RankCard key={entry.position} $color={entry.constructor.color}>
