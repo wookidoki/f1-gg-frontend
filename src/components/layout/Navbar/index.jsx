@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Sun, Moon, Zap, Calendar, Trophy, User, LogIn, LogOut, Users, BarChart2 } from 'lucide-react';
+import { Sun, Moon, Zap, Calendar, Trophy, User, LogIn, LogOut, Users, BarChart2, Heart } from 'lucide-react';
 import { useAuth } from '../../../contexts/AuthContext';
 import {
   NavWrapper, NavContent, Logo, MenuList, MenuItem,
@@ -23,7 +23,8 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
         { id: '/drivers', label: '드라이버', icon: User },
         { id: '/teams', label: '팀', icon: Users }, // team -> teams (복수형 추천)
         { id: '/standings', label: '순위', icon: Trophy },
-        { id: '/stats', label: '분석', icon: BarChart2 } // 통계 -> 분석 (더 전문적으로)
+        { id: '/stats', label: '분석', icon: BarChart2 }, // 통계 -> 분석 (더 전문적으로)
+        { id: '/favorites', label: '즐겨찾기', icon: Heart }
     ];
 
     return (

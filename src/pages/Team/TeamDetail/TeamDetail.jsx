@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  ArrowLeft, Trophy, MapPin, Users, Zap, Calendar
+  ArrowLeft, Trophy, MapPin, Users, Zap, Calendar, Heart
 } from 'lucide-react';
 import { API_BASE_URL, getFlagEmoji } from '../../../config';
+import { useFavorite } from '../../../hooks/useFavorite';
 
 import {
   DetailContainer, BackButton, HeroSection, TeamLogoLarge,
@@ -19,6 +20,7 @@ const TeamDetail = () => {
   const [teamData, setTeamData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { isFavorite, loading: favLoading, toggleFavorite } = useFavorite('CONSTRUCTOR', id);
 
   useEffect(() => {
     setLoading(true);
@@ -54,9 +56,31 @@ const TeamDetail = () => {
 
   return (
     <DetailContainer>
-      <BackButton onClick={() => navigate(-1)}>
-        <ArrowLeft size={20} /> 전체 목록으로
-      </BackButton>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <BackButton onClick={() => navigate(-1)} style={{ marginBottom: 0 }}>
+          <ArrowLeft size={20} /> 전체 목록으로
+        </BackButton>
+        <button
+          onClick={toggleFavorite}
+          disabled={favLoading}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 20px',
+            borderRadius: '12px',
+            border: isFavorite ? '2px solid #e10600' : '2px solid rgba(255,255,255,0.2)',
+            background: isFavorite ? 'rgba(225, 6, 0, 0.1)' : 'transparent',
+            color: isFavorite ? '#e10600' : 'inherit',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+        >
+          <Heart size={18} fill={isFavorite ? '#e10600' : 'none'} color={isFavorite ? '#e10600' : 'currentColor'} />
+          {isFavorite ? '즐겨찾기 해제' : '즐겨찾기'}
+        </button>
+      </div>
 
       {/* 1. 히어로 섹션 (팀 아이덴티티) */}
       <HeroSection $color={teamData.color}>

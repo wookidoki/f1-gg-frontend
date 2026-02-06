@@ -20,6 +20,7 @@ import RaceDetail from './pages/Standing/RaceDetail/RaceDEtail';
 
 import Login from './pages/Auth/Login';
 import Signup from './pages/Auth/Signup';
+import Favorites from './pages/Favorites/Favorites';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -50,6 +51,7 @@ function App() {
 
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/favorites" element={<Favorites />} />
             </Routes>
           </div>
 

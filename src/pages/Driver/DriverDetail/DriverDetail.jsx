@@ -1,9 +1,10 @@
 import React from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Trophy, Zap, ArrowLeft, Crown, Calendar, Flag, Hash
+  Trophy, Zap, ArrowLeft, Crown, Calendar, Flag, Hash, Heart
 } from 'lucide-react';
 import { getFlagEmoji } from '../../../config';
+import { useFavorite } from '../../../hooks/useFavorite';
 
 import { useDriverDetail } from './useDriverDetail';
 import {
@@ -19,6 +20,7 @@ const DriverDetail = () => {
   const season = searchParams.get('season') || '2025';
 
   const { driver, loading, error } = useDriverDetail(code, season);
+  const { isFavorite, loading: favLoading, toggleFavorite } = useFavorite('DRIVER', code);
 
   if (loading) return <DetailContainer style={{padding:'2rem', color:'white'}}>Loading...</DetailContainer>;
 
@@ -31,9 +33,31 @@ const DriverDetail = () => {
 
   return (
     <DetailContainer>
-      <BackButton onClick={() => navigate(-1)}>
-        <ArrowLeft size={20} /> 전체 목록
-      </BackButton>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <BackButton onClick={() => navigate(-1)} style={{ marginBottom: 0 }}>
+          <ArrowLeft size={20} /> 전체 목록
+        </BackButton>
+        <button
+          onClick={toggleFavorite}
+          disabled={favLoading}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 20px',
+            borderRadius: '12px',
+            border: isFavorite ? '2px solid #e10600' : '2px solid rgba(255,255,255,0.2)',
+            background: isFavorite ? 'rgba(225, 6, 0, 0.1)' : 'transparent',
+            color: isFavorite ? '#e10600' : 'inherit',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+        >
+          <Heart size={18} fill={isFavorite ? '#e10600' : 'none'} color={isFavorite ? '#e10600' : 'currentColor'} />
+          {isFavorite ? '즐겨찾기 해제' : '즐겨찾기'}
+        </button>
+      </div>
 
       <ProfileHeader $teamColor={driver.teamColor}>
         <BigNumber>{driver.number}</BigNumber>
