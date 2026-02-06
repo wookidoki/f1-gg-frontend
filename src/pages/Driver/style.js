@@ -24,9 +24,13 @@ export const Title = styled.h1`
   display: flex;
   align-items: center;
   gap: 10px;
-  
+
   span {
     color: ${(props) => props.theme.colors.primary};
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
   }
 `;
 

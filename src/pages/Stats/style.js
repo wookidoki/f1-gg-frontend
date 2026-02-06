@@ -18,6 +18,11 @@ export const PageTitle = styled.h1`
   font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 2rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+    gap: 8px;
+  }
 `;
 
 export const StatsGrid = styled.div`
@@ -106,6 +111,11 @@ export const BarRow = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    @media (max-width: 768px) {
+      width: 80px;
+      font-size: 0.8rem;
+    }
   }
 
   .bar-container {
@@ -143,6 +153,11 @@ export const BarRow = styled.div`
     span {
       color: #f1c40f;
       font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+      width: 45px;
+      font-size: 0.75rem;
     }
   }
 `;
