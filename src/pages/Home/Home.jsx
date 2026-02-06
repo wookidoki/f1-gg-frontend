@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Trophy, Zap, MapPin } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
+import { HeroBannerSkeleton, SkeletonBox, SkeletonText } from '../../components/common/Skeleton/Skeleton';
+import Countdown from '../../components/common/Countdown/Countdown';
 
 import {
   HomeContainer, HeroBanner, DDayBadge, RaceTitle, RaceInfo,
@@ -76,12 +78,12 @@ const Home = () => {
     return `D+${Math.abs(diff)}`;
   };
 
-  if (loading) return <div style={{padding:'2rem', color:'white'}}>Loading...</div>;
-
   return (
     <HomeContainer>
       {/* 1. 메인 배너 */}
-      {nextRace && (
+      {loading ? (
+        <HeroBannerSkeleton />
+      ) : nextRace && (
         <HeroBanner onClick={() => nextRace.status === 'FINISHED' && navigate(`/race/${nextRace.round}`)}>
           <DDayBadge>
             {nextRace.status === 'UPCOMING' ? 'NEXT RACE' : 'LAST RACE'} • {calculateDDay(nextRace.date)}
@@ -93,6 +95,9 @@ const Home = () => {
           <RaceInfo style={{ marginTop: '4px' }}>
             <MapPin size={18} /> {nextRace.circuitKr}
           </RaceInfo>
+          {nextRace.status === 'UPCOMING' && nextRace.date && (
+            <Countdown targetDate={nextRace.date} />
+          )}
         </HeroBanner>
       )}
 

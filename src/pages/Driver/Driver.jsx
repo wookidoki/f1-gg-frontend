@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { API_BASE_URL, getFlagEmoji } from '../../config';
 import SeasonSelector from '../../components/common/SeasonSelector/SeasonSelector';
+import { DriverCardSkeleton } from '../../components/common/Skeleton/Skeleton';
 
 import {
   PageContainer, Header, Title, SearchBar, SearchInput,
@@ -44,13 +45,11 @@ const Drivers = () => {
     driver.code.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div style={{padding:'2rem', color:'white'}}>데이터 분석 중... 🏎️</div>;
-
   return (
     <PageContainer>
       <Header>
         <Title>
-          <User size={28} /> {season} <span>DRIVERS</span>
+          <User size={28} /> {season || '2024'} <span>DRIVERS</span>
         </Title>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
           <SeasonSelector value={season} onChange={setSeason} />
@@ -66,6 +65,11 @@ const Drivers = () => {
       </Header>
 
       <GridContainer>
+        {loading ? (
+          <>
+            {[...Array(8)].map((_, i) => <DriverCardSkeleton key={i} />)}
+          </>
+        ) : (
         {filteredDrivers.map((driver) => (
           <DriverCard 
             key={driver.code} // 고유 ID 사용 (max_verstappen)
@@ -116,6 +120,8 @@ const Drivers = () => {
             </StatsRow>
           </DriverCard>
         ))}
+        </>
+        )}
       </GridContainer>
     </PageContainer>
   );

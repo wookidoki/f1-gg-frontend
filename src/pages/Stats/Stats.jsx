@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { BarChart2, Trophy, Users, Flag, Zap } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
 import SeasonSelector from '../../components/common/SeasonSelector/SeasonSelector';
+import { StatCardSkeleton, BarRowSkeleton } from '../../components/common/Skeleton/Skeleton';
 
 import {
   PageContainer, PageTitle, StatsGrid, StatCard,
@@ -46,7 +47,26 @@ const Stats = () => {
   }, [season]);
 
   if (loading) {
-    return <PageContainer style={{ padding: '2rem', color: 'white' }}>Loading...</PageContainer>;
+    return (
+      <PageContainer>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+          <PageTitle>
+            <BarChart2 size={28} color="#e10600" />
+            시즌 분석
+          </PageTitle>
+          <SeasonSelector value={season} onChange={setSeason} />
+        </div>
+        <StatsGrid>
+          {[...Array(4)].map((_, i) => <StatCardSkeleton key={i} />)}
+        </StatsGrid>
+        <Section>
+          <SectionTitle><Trophy size={20} /> 드라이버 챔피언십</SectionTitle>
+          <ChartContainer>
+            {[...Array(5)].map((_, i) => <BarRowSkeleton key={i} />)}
+          </ChartContainer>
+        </Section>
+      </PageContainer>
+    );
   }
 
   // Calculate stats

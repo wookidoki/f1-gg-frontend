@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Sun, Moon, Zap, Calendar, Trophy, User, LogIn, LogOut, Users, BarChart2, Heart, Menu, X } from 'lucide-react';
+import { Sun, Moon, Zap, Calendar, Trophy, User, LogIn, LogOut, Users, BarChart2, Heart, Menu, X, GitCompare } from 'lucide-react';
 import { useAuth } from '../../../contexts/AuthContext';
 import Search from '../../common/Search/Search';
 import {
@@ -35,6 +35,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
         { id: '/teams', label: '팀', icon: Users },
         { id: '/standings', label: '순위', icon: Trophy },
         { id: '/stats', label: '분석', icon: BarChart2 },
+        { id: '/compare', label: '비교', icon: GitCompare },
         { id: '/favorites', label: '즐겨찾기', icon: Heart }
     ];
 
