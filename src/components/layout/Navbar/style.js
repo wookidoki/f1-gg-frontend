@@ -125,21 +125,32 @@ export const LoginButton = styled.button`
   align-items: center;
   gap: 6px;
   padding: 8px 20px;
-  border-radius: 6px; /* F1은 둥근 것보다 살짝 각진 게 어울림 */
+  border-radius: 6px;
   font-size: 14px;
   font-weight: 700;
   color: #fff;
   background-color: ${(props) => props.theme.colors.primary};
   transition: all 0.2s ease;
-  
-  /* 비스듬한 모양 (선택사항: F1 느낌 내려면 skew 사용) */
-  /* transform: skew(-10deg); */
 
   &:hover {
     background-color: ${(props) => props.theme.colors.primaryHover};
-    box-shadow: 0 4px 12px ${(props) => props.theme.colors.primary}50; /* 빨간 그림자 */
+    box-shadow: 0 4px 12px ${(props) => props.theme.colors.primary}50;
   }
+`;
 
-  /* 텍스트는 다시 반대로 돌려야 함 (skew 사용 시) */
-  /* span, svg { transform: skew(10deg); } */
+export const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: ${(props) => props.theme.bg};
+  border: 1px solid ${(props) => props.theme.border};
+  color: ${(props) => props.theme.text};
+  font-size: 14px;
+  font-weight: 600;
+
+  svg {
+    color: ${(props) => props.theme.colors.primary};
+  }
 `;

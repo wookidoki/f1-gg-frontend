@@ -3,11 +3,12 @@ import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './styles/GlobalStyle';
 import { lightTheme, darkTheme } from './styles/theme';
+import { AuthProvider } from './contexts/AuthContext';
 
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer/footer';
 import Home from './pages/Home/Home';
-import Schedule from './pages/Schedule/Schedule'; 
+import Schedule from './pages/Schedule/Schedule';
 import Driver from './pages/Driver/Driver';
 import DriverDetail from './pages/Driver/DriverDetail/DriverDetail';
 
@@ -16,6 +17,9 @@ import TeamDetail from './pages/Team/TeamDetail/TeamDetail';
 
 import Standings from './pages/Standing/Standing';
 import RaceDetail from './pages/Standing/RaceDetail/RaceDEtail';
+
+import Login from './pages/Auth/Login';
+import Signup from './pages/Auth/Signup';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -27,28 +31,31 @@ function App() {
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <GlobalStyle />
-      
-      <BrowserRouter>
-        <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      <AuthProvider>
+        <BrowserRouter>
+          <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
 
-        <div style={{ maxWidth: '1024px', margin: '2rem auto', padding: '0 1rem' }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/drivers" element={<Driver/>} />
-            <Route path="/drivers/:code" element={<DriverDetail/>} />
+          <div style={{ maxWidth: '1024px', margin: '2rem auto', padding: '0 1rem' }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/schedule" element={<Schedule />} />
+              <Route path="/drivers" element={<Driver/>} />
+              <Route path="/drivers/:code" element={<DriverDetail/>} />
 
-            <Route path="/team" element={<Teams/>} />
-            <Route path="/teams/:id" element={<TeamDetail/>} />
+              <Route path="/team" element={<Teams/>} />
+              <Route path="/teams/:id" element={<TeamDetail/>} />
 
-            <Route path="/standings" element={<Standings />} />
-            <Route path="/race/:id" element={<RaceDetail />} />
-        
-          </Routes>
-        </div>
+              <Route path="/standings" element={<Standings />} />
+              <Route path="/race/:id" element={<RaceDetail />} />
 
-        <Footer />
-      </BrowserRouter>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+            </Routes>
+          </div>
+
+          <Footer />
+        </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

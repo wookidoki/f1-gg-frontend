@@ -1,14 +1,21 @@
 import React from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Sun, Moon, Zap, Calendar, Trophy, User, LogIn, Users, BarChart2 } from 'lucide-react';
-import { 
-  NavWrapper, NavContent, Logo, MenuList, MenuItem, 
-  ActionGroup, ThemeButton, LoginButton 
+import { Sun, Moon, Zap, Calendar, Trophy, User, LogIn, LogOut, Users, BarChart2 } from 'lucide-react';
+import { useAuth } from '../../../contexts/AuthContext';
+import {
+  NavWrapper, NavContent, Logo, MenuList, MenuItem,
+  ActionGroup, ThemeButton, LoginButton, UserInfo
 } from './style';
 
-const Navbar = ({ isDarkMode, toggleTheme }) => { 
+const Navbar = ({ isDarkMode, toggleTheme }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { user, isAuthenticated, logout } = useAuth();
+
+    const handleLogout = async () => {
+        await logout();
+        navigate('/');
+    };
 
     const navItems = [
         { id: '/', label: '홈', icon: Zap },
@@ -51,11 +58,24 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
                     <ThemeButton onClick={toggleTheme} aria-label="테마 변경">
                         {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
                     </ThemeButton>
-                    
-                    <LoginButton onClick={() => navigate('/login')}>
-                        <LogIn size={16} /> 
-                        <span>로그인</span>
-                    </LoginButton>
+
+                    {isAuthenticated ? (
+                        <>
+                            <UserInfo>
+                                <User size={16} />
+                                <span>{user?.nickname}</span>
+                            </UserInfo>
+                            <LoginButton onClick={handleLogout}>
+                                <LogOut size={16} />
+                                <span>로그아웃</span>
+                            </LoginButton>
+                        </>
+                    ) : (
+                        <LoginButton onClick={() => navigate('/login')}>
+                            <LogIn size={16} />
+                            <span>로그인</span>
+                        </LoginButton>
+                    )}
                 </ActionGroup>
             </NavContent>
         </NavWrapper>
