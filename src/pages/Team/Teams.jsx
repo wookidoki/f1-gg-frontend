@@ -1,30 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Users, Trophy, Zap } from 'lucide-react';
+import { Search, Users, Zap } from 'lucide-react';
+import { API_BASE_URL } from '../../config';
 
-import { 
-  PageContainer, Header, Title, SearchBar, SearchInput, 
-  GridContainer, TeamCard, TeamHeader, TeamLogoPlaceholder, 
-  TeamInfo, TeamName, CarModel, StatsRow, StatItem 
+import {
+  PageContainer, Header, Title, SearchBar, SearchInput,
+  GridContainer, TeamCard, TeamHeader, TeamLogoPlaceholder,
+  TeamInfo, TeamName, CarModel, StatsRow, StatItem
 } from './style';
 
 const Teams = () => {
-  const navigate = useNavigate(); // 괄호() 필수!
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [teams, setTeams] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock Data: 2024 시즌 팀 데이터
-  const teamsData = [
-    { id: 1, name: "Red Bull Racing", car: "RB20", principal: "Christian Horner", points: 860, color: "#0600EF" },
-    { id: 2, name: "Mercedes", car: "W15", principal: "Toto Wolff", points: 409, color: "#00D2BE" },
-    { id: 3, name: "Ferrari", car: "SF-24", principal: "Frédéric Vasseur", points: 406, color: "#C00000" },
-    { id: 4, name: "McLaren", car: "MCL38", principal: "Andrea Stella", points: 302, color: "#FF8000" },
-    { id: 5, name: "Aston Martin", car: "AMR24", principal: "Mike Krack", points: 280, color: "#006F62" },
-    { id: 6, name: "Alpine", car: "A524", principal: "Bruno Famin", points: 120, color: "#0090FF" },
-  ];
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/constructors`)
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          setTeams(response.data);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Fetch Error:", err);
+        setLoading(false);
+      });
+  }, []);
 
-  const filteredTeams = teamsData.filter(team => 
-    team.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTeams = teams.filter(team =>
+    team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    team.nameKr.includes(searchTerm)
   );
+
+  if (loading) return <div style={{padding:'2rem', color:'white'}}>Loading...</div>;
 
   return (
     <PageContainer>
@@ -34,8 +45,8 @@ const Teams = () => {
         </Title>
         <SearchBar>
           <Search size={18} style={{ opacity: 0.5 }} />
-          <SearchInput 
-            placeholder="팀 이름 검색..." 
+          <SearchInput
+            placeholder="팀 이름 검색..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -44,13 +55,12 @@ const Teams = () => {
 
       <GridContainer>
         {filteredTeams.map((team) => (
-          <TeamCard 
-            key={team.id} 
+          <TeamCard
+            key={team.constructorId}
             $teamColor={team.color}
-            onClick={() => navigate(`/teams/${team.id}`)}
+            onClick={() => navigate(`/teams/${team.constructorId}`)}
           >
             <TeamHeader>
-              {/* 실제로는 팀 로고 이미지가 들어갈 자리 */}
               <TeamLogoPlaceholder $color={team.color}>
                 {team.name.substring(0, 1)}
               </TeamLogoPlaceholder>
@@ -58,9 +68,13 @@ const Teams = () => {
             </TeamHeader>
 
             <TeamInfo>
-              <CarModel>{team.car}</CarModel>
+              <CarModel>{team.nameKr}</CarModel>
               <TeamName>{team.name}</TeamName>
-              <p style={{ fontSize: '0.85rem', opacity: 0.7 }}>CEO: {team.principal}</p>
+              {team.drivers && team.drivers.length > 0 && (
+                <p style={{ fontSize: '0.85rem', opacity: 0.7 }}>
+                  {team.drivers.map(d => d.nameKr).join(' / ')}
+                </p>
+              )}
             </TeamInfo>
 
             <StatsRow>
@@ -69,9 +83,14 @@ const Teams = () => {
                 <strong>{team.points}</strong>
               </StatItem>
               <StatItem>
+                <span>WINS</span>
+                <strong style={{ color: team.wins > 0 ? '#f1c40f' : 'inherit' }}>
+                  {team.wins > 0 ? team.wins : '-'}
+                </strong>
+              </StatItem>
+              <StatItem>
                 <span>RANK</span>
-                {/* 데이터 연동 시 계산 로직 필요 */}
-                <strong>{team.id}위</strong> 
+                <strong>{team.rank}위</strong>
               </StatItem>
             </StatsRow>
           </TeamCard>

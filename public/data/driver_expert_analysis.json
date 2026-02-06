@@ -1,0 +1,443 @@
+[
+  {
+    "driverId": "lando_norris",
+    "code": "NOR",
+    "team": "McLaren",
+    "fullName": "Lando Norris",
+    "season_stats": {
+      "rank": 1,
+      "points": 423.0,
+      "gap_to_leader": 0.0,
+      "last_year_rank": 1
+    },
+    "metrics": {
+      "qualifying_gap_pct": 0.149,
+      "race_pace_diff": -0.782,
+      "consistency_sd": 0.936,
+      "incident_risk_pct": 0.0,
+      "position_gain": -1.889,
+      "start_reaction_gain": -0.5,
+      "teammate_comparison": -0.068
+    }
+  },
+  {
+    "driverId": "max_verstappen",
+    "code": "VER",
+    "team": "Red Bull Racing",
+    "fullName": "Max Verstappen",
+    "season_stats": {
+      "rank": 2,
+      "points": 421.0,
+      "gap_to_leader": 2.0,
+      "last_year_rank": 1
+    },
+    "metrics": {
+      "qualifying_gap_pct": 0.314,
+      "race_pace_diff": -0.817,
+      "consistency_sd": 0.973,
+      "incident_risk_pct": 0.0,
+      "position_gain": 2.2,
+      "start_reaction_gain": 0.5,
+      "teammate_comparison": -1.087
+    }
+  },
+  {
+    "driverId": "oscar_piastri",
+    "code": "PIA",
+    "team": "McLaren",
+    "fullName": "Oscar Piastri",
+    "season_stats": {
+      "rank": 3,
+      "points": 410.0,
+      "gap_to_leader": 13.0,
+      "last_year_rank": 3
+    },
+    "metrics": {
+      "qualifying_gap_pct": 0.404,
+      "race_pace_diff": -0.764,
+      "consistency_sd": 1.03,
+      "incident_risk_pct": 0.0,
+      "position_gain": 0.125,
+      "start_reaction_gain": 0.0,
+      "teammate_comparison": 0.068
+    }
+  },
+  {
+    "driverId": "george_russell",
+    "code": "RUS",
+    "team": "Mercedes",
+    "fullName": "George Russell",
+    "season_stats": {
+      "rank": 4,
+      "points": 319.0,
+      "gap_to_leader": 104.0,
+      "last_year_rank": 2
+    },
+    "metrics": {
+      "qualifying_gap_pct": 0.481,
+      "race_pace_diff": -0.387,
+      "consistency_sd": 0.958,
+      "incident_risk_pct": 0.0,
+      "position_gain": 0.0,
+      "start_reaction_gain": -0.8,
+      "teammate_comparison": -0.095
+    }
+  },
+  {
+    "driverId": "charles_leclerc",
+    "code": "LEC",
+    "team": "Ferrari",
+    "fullName": "Charles Leclerc",
+    "season_stats": {
+      "rank": 5,
+      "points": 242.0,
+      "gap_to_leader": 181.0,
+      "last_year_rank": 7
+    },
+    "metrics": {
+      "qualifying_gap_pct": 0.697,
+      "race_pace_diff": -0.353,
+      "consistency_sd": 1.088,
+      "incident_risk_pct": 0.0,
+      "position_gain": 1.25,
+      "start_reaction_gain": 0.6,
+      "teammate_comparison": 0.235
+    }
+  },
+  {
+    "driverId": "lewis_hamilton",
+    "code": "HAM",
+    "team": "Ferrari",
+    "fullName": "Lewis Hamilton",
+    "season_stats": {
+      "rank": 6,
+      "points": 156.0,
+      "gap_to_leader": 267.0,
+      "last_year_rank": 5
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.608,
+      "race_pace_diff": -0.066,
+      "consistency_sd": 0.993,
+      "incident_risk_pct": 0.0,
+      "position_gain": 3.25,
+      "start_reaction_gain": 1.1,
+      "teammate_comparison": -0.235
+    }
+  },
+  {
+    "driverId": "andrea_kimi_antonelli",
+    "code": "ANT",
+    "team": "Mercedes",
+    "fullName": "Andrea Kimi Antonelli",
+    "season_stats": {
+      "rank": 7,
+      "points": 150.0,
+      "gap_to_leader": 273.0,
+      "last_year_rank": null
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.321,
+      "race_pace_diff": -0.281,
+      "consistency_sd": 1.068,
+      "incident_risk_pct": 0.0,
+      "position_gain": -0.2,
+      "start_reaction_gain": -0.7,
+      "teammate_comparison": 0.095
+    }
+  },
+  {
+    "driverId": "alexander_albon",
+    "code": "ALB",
+    "team": "Williams",
+    "fullName": "Alexander Albon",
+    "season_stats": {
+      "rank": 8,
+      "points": 73.0,
+      "gap_to_leader": 350.0,
+      "last_year_rank": 10
+    },
+    "metrics": {
+      "qualifying_gap_pct": 2.262,
+      "race_pace_diff": 0.225,
+      "consistency_sd": 1.199,
+      "incident_risk_pct": 0.0,
+      "position_gain": 4.778,
+      "start_reaction_gain": 0.4,
+      "teammate_comparison": 0.065
+    }
+  },
+  {
+    "driverId": "carlos_sainz",
+    "code": "SAI",
+    "team": "Williams",
+    "fullName": "Carlos Sainz",
+    "season_stats": {
+      "rank": 9,
+      "points": 64.0,
+      "gap_to_leader": 359.0,
+      "last_year_rank": 9
+    },
+    "metrics": {
+      "qualifying_gap_pct": 0.864,
+      "race_pace_diff": -0.022,
+      "consistency_sd": 1.077,
+      "incident_risk_pct": 0.0,
+      "position_gain": 0.333,
+      "start_reaction_gain": 0.3,
+      "teammate_comparison": -0.065
+    }
+  },
+  {
+    "driverId": "fernando_alonso",
+    "code": "ALO",
+    "team": "Aston Martin",
+    "fullName": "Fernando Alonso",
+    "season_stats": {
+      "rank": 10,
+      "points": 56.0,
+      "gap_to_leader": 367.0,
+      "last_year_rank": 11
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.005,
+      "race_pace_diff": 0.403,
+      "consistency_sd": 0.977,
+      "incident_risk_pct": 0.0,
+      "position_gain": -0.625,
+      "start_reaction_gain": -0.3,
+      "teammate_comparison": -0.043
+    }
+  },
+  {
+    "driverId": "nico_hulkenberg",
+    "code": "HUL",
+    "team": "Kick Sauber",
+    "fullName": "Nico Hulkenberg",
+    "season_stats": {
+      "rank": 11,
+      "points": 51.0,
+      "gap_to_leader": 372.0,
+      "last_year_rank": 9
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.669,
+      "race_pace_diff": 0.522,
+      "consistency_sd": 1.2,
+      "incident_risk_pct": 0.26,
+      "position_gain": 1.714,
+      "start_reaction_gain": 0.0,
+      "teammate_comparison": -4.072
+    }
+  },
+  {
+    "driverId": "isack_hadjar",
+    "code": "HAD",
+    "team": "Racing Bulls",
+    "fullName": "Isack Hadjar",
+    "season_stats": {
+      "rank": 12,
+      "points": 51.0,
+      "gap_to_leader": 372.0,
+      "last_year_rank": null
+    },
+    "metrics": {
+      "qualifying_gap_pct": 0.931,
+      "race_pace_diff": 0.197,
+      "consistency_sd": 1.068,
+      "incident_risk_pct": 0.0,
+      "position_gain": -1.7,
+      "start_reaction_gain": 0.2,
+      "teammate_comparison": -0.623
+    }
+  },
+  {
+    "driverId": "oliver_bearman",
+    "code": "BEA",
+    "team": "Haas F1 Team",
+    "fullName": "Oliver Bearman",
+    "season_stats": {
+      "rank": 13,
+      "points": 41.0,
+      "gap_to_leader": 382.0,
+      "last_year_rank": null
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.479,
+      "race_pace_diff": 0.254,
+      "consistency_sd": 1.021,
+      "incident_risk_pct": 0.0,
+      "position_gain": 2.778,
+      "start_reaction_gain": 0.7,
+      "teammate_comparison": -0.252
+    }
+  },
+  {
+    "driverId": "esteban_ocon",
+    "code": "OCO",
+    "team": "Haas F1 Team",
+    "fullName": "Esteban Ocon",
+    "season_stats": {
+      "rank": 14,
+      "points": 38.0,
+      "gap_to_leader": 385.0,
+      "last_year_rank": 13
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.946,
+      "race_pace_diff": 0.538,
+      "consistency_sd": 1.024,
+      "incident_risk_pct": 0.0,
+      "position_gain": 3.1,
+      "start_reaction_gain": 1.0,
+      "teammate_comparison": 0.252
+    }
+  },
+  {
+    "driverId": "liam_lawson",
+    "code": "LAW",
+    "team": "Red Bull Racing",
+    "fullName": "Liam Lawson",
+    "season_stats": {
+      "rank": 15,
+      "points": 38.0,
+      "gap_to_leader": 385.0,
+      "last_year_rank": null
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.145,
+      "race_pace_diff": 0.33,
+      "consistency_sd": 0.982,
+      "incident_risk_pct": 0.0,
+      "position_gain": -1.556,
+      "start_reaction_gain": 0.5,
+      "teammate_comparison": 0.623
+    }
+  },
+  {
+    "driverId": "lance_stroll",
+    "code": "STR",
+    "team": "Aston Martin",
+    "fullName": "Lance Stroll",
+    "season_stats": {
+      "rank": 16,
+      "points": 33.0,
+      "gap_to_leader": 390.0,
+      "last_year_rank": 15
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.98,
+      "race_pace_diff": 0.398,
+      "consistency_sd": 1.041,
+      "incident_risk_pct": 0.0,
+      "position_gain": 2.778,
+      "start_reaction_gain": 0.0,
+      "teammate_comparison": 0.043
+    }
+  },
+  {
+    "driverId": "yuki_tsunoda",
+    "code": "TSU",
+    "team": "Racing Bulls",
+    "fullName": "Yuki Tsunoda",
+    "season_stats": {
+      "rank": 17,
+      "points": 33.0,
+      "gap_to_leader": 390.0,
+      "last_year_rank": 17
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.955,
+      "race_pace_diff": 0.263,
+      "consistency_sd": 1.032,
+      "incident_risk_pct": 0.0,
+      "position_gain": 1.4,
+      "start_reaction_gain": 0.7,
+      "teammate_comparison": 1.087
+    }
+  },
+  {
+    "driverId": "pierre_gasly",
+    "code": "GAS",
+    "team": "Alpine",
+    "fullName": "Pierre Gasly",
+    "season_stats": {
+      "rank": 18,
+      "points": 22.0,
+      "gap_to_leader": 401.0,
+      "last_year_rank": 19
+    },
+    "metrics": {
+      "qualifying_gap_pct": 1.777,
+      "race_pace_diff": 0.72,
+      "consistency_sd": 1.003,
+      "incident_risk_pct": 0.0,
+      "position_gain": -1.2,
+      "start_reaction_gain": 0.0,
+      "teammate_comparison": -0.058
+    }
+  },
+  {
+    "driverId": "gabriel_bortoleto",
+    "code": "BOR",
+    "team": "Kick Sauber",
+    "fullName": "Gabriel Bortoleto",
+    "season_stats": {
+      "rank": 19,
+      "points": 19.0,
+      "gap_to_leader": 404.0,
+      "last_year_rank": null
+    },
+    "metrics": {
+      "qualifying_gap_pct": 2.178,
+      "race_pace_diff": 0.532,
+      "consistency_sd": 0.966,
+      "incident_risk_pct": 0.0,
+      "position_gain": 0.25,
+      "start_reaction_gain": 0.0,
+      "teammate_comparison": 4.072
+    }
+  },
+  {
+    "driverId": "jack_doohan",
+    "code": "DOO",
+    "team": "Alpine",
+    "fullName": "Jack Doohan",
+    "season_stats": {
+      "rank": 20,
+      "points": 0.0,
+      "gap_to_leader": 423.0,
+      "last_year_rank": null
+    },
+    "metrics": {
+      "qualifying_gap_pct": 0.0,
+      "race_pace_diff": 0.0,
+      "consistency_sd": 0.0,
+      "incident_risk_pct": 0.0,
+      "position_gain": 0.0,
+      "start_reaction_gain": 0.0,
+      "teammate_comparison": 0.0
+    }
+  },
+  {
+    "driverId": "franco_colapinto",
+    "code": "COL",
+    "team": "Alpine",
+    "fullName": "Franco Colapinto",
+    "season_stats": {
+      "rank": 21,
+      "points": 0.0,
+      "gap_to_leader": 423.0,
+      "last_year_rank": null
+    },
+    "metrics": {
+      "qualifying_gap_pct": 2.291,
+      "race_pace_diff": 0.792,
+      "consistency_sd": 1.159,
+      "incident_risk_pct": 0.0,
+      "position_gain": 1.1,
+      "start_reaction_gain": 0.3,
+      "teammate_comparison": 0.058
+    }
+  }
+]

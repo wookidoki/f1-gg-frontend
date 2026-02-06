@@ -1,41 +1,57 @@
-import React, { useState } from 'react';
-import { Search, User, Trophy } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, User, Trophy, Flag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-// 스타일 컴포넌트 임포트 (파일명이 style.js 라고 가정)
+// 1. 전역 설정 및 헬퍼 함수 가져오기
+import { API_BASE_URL, getFlagEmoji } from '../../config'; 
+
 import { 
   PageContainer, Header, Title, SearchBar, SearchInput, 
   GridContainer, DriverCard, TeamColorBar, DriverNumber, 
   DriverInfo, DriverName, TeamName, StatsRow, StatItem 
-} from './style'; 
+} from './style'; // 경로 확인 필요
 
 const Drivers = () => {
-  // 검색 상태 관리
-  const [searchTerm, setSearchTerm] = useState('');
-
   const navigate = useNavigate();
 
-  // 드라이버 임시 데이터 (나중에 API로 대체)
-  const driversData = [
-    { id: 1, name: "Max Verstappen", number: 1, team: "Red Bull Racing", points: 393, color: "#0600EF" },
-    { id: 2, name: "Sergio Perez", number: 11, team: "Red Bull Racing", points: 258, color: "#0600EF" },
-    { id: 3, name: "Lewis Hamilton", number: 44, team: "Mercedes", points: 234, color: "#00D2BE" },
-    { id: 4, name: "George Russell", number: 63, team: "Mercedes", points: 178, color: "#00D2BE" },
-    { id: 5, name: "Charles Leclerc", number: 16, team: "Ferrari", points: 307, color: "#C00000" },
-    { id: 6, name: "Carlos Sainz", number: 55, team: "Ferrari", points: 289, color: "#C00000" },
-    { id: 7, name: "Lando Norris", number: 4, team: "McLaren", points: 331, color: "#FF8000" },
-    { id: 8, name: "Oscar Piastri", number: 81, team: "McLaren", points: 220, color: "#FF8000" },
-  ];
+  // 상태 관리
+  const [searchTerm, setSearchTerm] = useState('');
+  const [drivers, setDrivers] = useState([]); // 실제 데이터 담을 곳
+  const [loading, setLoading] = useState(true);
 
-  // 검색 필터링 로직
-  const filteredDrivers = driversData.filter(driver => 
-    driver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    driver.team.toLowerCase().includes(searchTerm.toLowerCase())
+  // 2. 백엔드 API 호출 (useEffect)
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/drivers`)
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(response => {
+        console.log("드라이버 데이터:", response);
+        // ResponseData 구조: { success, status, message, data }
+        if (response.success) {
+          setDrivers(response.data);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Fetch Error:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  // 3. 검색 필터링 (한글, 영어, 팀, 코드명(VER)까지 검색 지원)
+  const filteredDrivers = drivers.filter(driver => 
+    driver.nameKr.includes(searchTerm) || 
+    driver.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    driver.team.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    driver.code.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) return <div style={{padding:'2rem', color:'white'}}>데이터 분석 중... 🏎️</div>;
 
   return (
     <PageContainer>
-      {/* 1. 상단 헤더 및 검색창 */}
       <Header>
         <Title>
           <User size={28} /> 2024 <span>DRIVERS</span>
@@ -43,41 +59,60 @@ const Drivers = () => {
         <SearchBar>
           <Search size={18} style={{ opacity: 0.5 }} />
           <SearchInput 
-            placeholder="드라이버 또는 팀 이름 검색..." 
+            placeholder="드라이버(한글/영어), 팀, 코드(VER) 검색..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </SearchBar>
       </Header>
 
-      {/* 2. 드라이버 카드 리스트 */}
       <GridContainer>
         {filteredDrivers.map((driver) => (
           <DriverCard 
-            key={driver.id}
-            onClick={()=> navigate(`/drivers/${driver.id}`)}>
-            {/* 팀 컬러 라인 */}
-            <TeamColorBar $color={driver.color} />
+            key={driver.code} // 고유 ID 사용 (max_verstappen)
+            onClick={() => navigate(`/drivers/${driver.code}`)}
+          >
+            <TeamColorBar $color={driver.teamColor} />
             
+            {/* 상단: 등번호 + 국기/코드 */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <DriverNumber>{driver.number}</DriverNumber>
-              <Trophy size={20} color={driver.color} />
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+                <span style={{ fontSize: '1.5rem' }}>{getFlagEmoji(driver.nationality)}</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: '900', opacity: 0.5, fontStyle:'italic' }}>
+                  {driver.code}
+                </span>
+              </div>
             </div>
 
+            {/* 중간: 이름 및 팀 */}
             <DriverInfo>
-              <DriverName>{driver.name}</DriverName>
-              <TeamName>{driver.team}</TeamName>
+              <DriverName>
+                {driver.nameKr}
+                {/* 영어 이름은 작게 서브로 표시 */}
+                <span style={{ display:'block', fontSize:'0.6em', opacity:0.5, marginTop:'2px', fontWeight:500 }}>
+                  {driver.nameEn}
+                </span>
+              </DriverName>
+              <TeamName style={{ color: driver.teamColor }}>{driver.team}</TeamName>
             </DriverInfo>
 
+            {/* 하단: 스탯 (포인트 + 우승 횟수) */}
             <StatsRow>
               <StatItem>
                 <span>POINTS</span>
                 <strong>{driver.points}</strong>
               </StatItem>
               <StatItem>
-                <span>PODIUMS</span>
-                {/* 데이터가 없어서 임시값 */}
-                <strong>--</strong>
+                <span>WINS</span>
+                {/* 우승 횟수가 0이면 - 표시, 아니면 숫자 */}
+                <strong style={{ color: driver.wins > 0 ? '#FFD700' : 'inherit' }}>
+                   {driver.wins > 0 ? driver.wins : '-'}
+                </strong>
+              </StatItem>
+              <StatItem>
+                <span>RANK</span>
+                <strong>{driver.rank}</strong>
               </StatItem>
             </StatsRow>
           </DriverCard>

@@ -1,118 +1,127 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trophy, MapPin, Flag, Calendar, ChevronRight } from 'lucide-react';
+import { API_BASE_URL } from '../../config';
 
-import { 
-  PageContainer, TopRankSection, RankCard, 
-  HeroRaceCard, HeroContent, WinnerBadge, 
-  SectionTitle, RaceList, RaceItem, StatusBadge 
+import {
+  PageContainer, TopRankSection, RankCard,
+  HeroRaceCard, HeroContent, WinnerBadge,
+  SectionTitle, RaceList, RaceItem, StatusBadge
 } from './style';
 
 const Standings = () => {
   const navigate = useNavigate();
+  const [constructorStandings, setConstructorStandings] = useState([]);
+  const [schedule, setSchedule] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Mock Data: 컨스트럭터(팀) 순위
-  const teamStandings = [
-    { rank: 1, name: "Red Bull Racing", points: 860, color: "#0600EF" },
-    { rank: 2, name: "Ferrari", points: 406, color: "#C00000" },
-    { rank: 3, name: "McLaren", points: 302, color: "#FF8000" },
-  ];
+  useEffect(() => {
+    Promise.all([
+      fetch(`${API_BASE_URL}/standings/constructors`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/schedule`).then(res => res.json())
+    ])
+      .then(([standingsRes, scheduleRes]) => {
+        if (standingsRes.success) {
+          setConstructorStandings(standingsRes.data.standings.slice(0, 3));
+        }
+        if (scheduleRes.success) {
+          setSchedule(scheduleRes.data);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Fetch Error:", err);
+        setLoading(false);
+      });
+  }, []);
 
-  // Mock Data: 가장 최근 종료된 경기
-  const lastRace = {
-    id: 14,
-    round: 14,
-    name: "Belgian Grand Prix",
-    circuit: "Circuit de Spa-Francorchamps",
-    date: "2024.07.28",
-    winner: "George Russell", // (실제로는 실격됐지만 예시로)
-    winnerTeam: "Mercedes",
-    time: "1:19:57.040",
-    points: 25,
-    flag: "🇧🇪"
-  };
+  if (loading) return <div style={{padding:'2rem', color:'white'}}>Loading...</div>;
 
-  // Mock Data: 시즌 전체 일정 (일부)
-  const seasonSchedule = [
-    { id: 15, round: 15, name: "Dutch Grand Prix", date: "08.25", status: "UPCOMING", flag: "🇳🇱" },
-    { id: 14, round: 14, name: "Belgian Grand Prix", date: "07.28", status: "FINISHED", winner: "G. Russell", flag: "🇧🇪" },
-    { id: 13, round: 13, name: "Hungarian Grand Prix", date: "07.21", status: "FINISHED", winner: "O. Piastri", flag: "🇭🇺" },
-    { id: 12, round: 12, name: "British Grand Prix", date: "07.07", status: "FINISHED", winner: "L. Hamilton", flag: "🇬🇧" },
-    // ... 더 많은 경기
-  ];
+  // 가장 최근 완료된 경기 찾기
+  const finishedRaces = schedule?.races?.filter(r => r.status === 'FINISHED') || [];
+  const lastRace = finishedRaces[finishedRaces.length - 1];
+
+  // 최근 5개 경기
+  const recentRaces = schedule?.races?.slice(-8) || [];
 
   return (
     <PageContainer>
-      
+
       {/* 1. 시즌 컨스트럭터 순위 (Top 3) */}
-      <SectionTitle><Trophy size={18} /> 2024 CONSTRUCTOR STANDINGS</SectionTitle>
+      <SectionTitle><Trophy size={18} /> {schedule?.season || '2024'} CONSTRUCTOR STANDINGS</SectionTitle>
       <TopRankSection>
-        {teamStandings.map((team) => (
-          <RankCard key={team.rank} $color={team.color}>
-            <div className="rank">#{team.rank}</div>
+        {constructorStandings.map((entry) => (
+          <RankCard key={entry.position} $color={entry.constructor.color}>
+            <div className="rank">#{entry.position}</div>
             <div className="info">
-              <h3>{team.name}</h3>
-              <p>{team.points} PTS</p>
+              <h3>{entry.constructor.nameKr}</h3>
+              <p>{entry.points} PTS</p>
             </div>
           </RankCard>
         ))}
       </TopRankSection>
 
       {/* 2. 가장 최근 경기 (Hero Card) */}
-      <SectionTitle style={{ marginTop: '2rem' }}>
-        <Flag size={18} /> LAST RACE RESULT
-      </SectionTitle>
-      
-      <HeroRaceCard onClick={() => navigate(`/race/${lastRace.id}`)}>
-        <div className="bg-overlay" />
-        <HeroContent>
-          <div className="race-info">
-            <span className="round">ROUND {lastRace.round} • {lastRace.date}</span>
-            <h1>{lastRace.flag} {lastRace.name}</h1>
-            <p className="circuit"><MapPin size={16}/> {lastRace.circuit}</p>
-          </div>
-          
-          <div className="winner-info">
-            <span className="label">WINNER</span>
-            <WinnerBadge>
-              <Trophy size={20} color="#FFD700" />
-              <div>
-                <span className="driver">{lastRace.winner}</span>
-                <span className="team">{lastRace.winnerTeam}</span>
+      {lastRace && (
+        <>
+          <SectionTitle style={{ marginTop: '2rem' }}>
+            <Flag size={18} /> LAST RACE RESULT
+          </SectionTitle>
+
+          <HeroRaceCard onClick={() => navigate(`/race/${lastRace.round}`)}>
+            <div className="bg-overlay" />
+            <HeroContent>
+              <div className="race-info">
+                <span className="round">ROUND {lastRace.round} • {lastRace.date}</span>
+                <h1>{lastRace.countryFlag} {lastRace.raceNameKr}</h1>
+                <p className="circuit"><MapPin size={16}/> {lastRace.circuitKr}</p>
               </div>
-            </WinnerBadge>
-          </div>
-        </HeroContent>
-      </HeroRaceCard>
+
+              {lastRace.winner && (
+                <div className="winner-info">
+                  <span className="label">WINNER</span>
+                  <WinnerBadge>
+                    <Trophy size={20} color="#FFD700" />
+                    <div>
+                      <span className="driver">{lastRace.winner.nameKr}</span>
+                      <span className="team">{lastRace.winner.team}</span>
+                    </div>
+                  </WinnerBadge>
+                </div>
+              )}
+            </HeroContent>
+          </HeroRaceCard>
+        </>
+      )}
 
       {/* 3. 전체 경기 리스트 */}
       <SectionTitle style={{ marginTop: '3rem' }}>
-        <Calendar size={18} /> 2024 SEASON SCHEDULE
+        <Calendar size={18} /> {schedule?.season || '2024'} SEASON SCHEDULE
       </SectionTitle>
-      
+
       <RaceList>
-        {seasonSchedule.map((race) => (
-          <RaceItem 
-            key={race.id} 
-            onClick={() => race.status === 'FINISHED' ? navigate(`/race/${race.id}`) : null}
+        {recentRaces.map((race) => (
+          <RaceItem
+            key={race.round}
+            onClick={() => race.status === 'FINISHED' ? navigate(`/race/${race.round}`) : null}
             $isUpcoming={race.status === 'UPCOMING'}
           >
             <div className="left">
               <span className="round">R{race.round}</span>
               <span className="date">{race.date}</span>
-              <span className="flag">{race.flag}</span>
-              <span className="name">{race.name}</span>
+              <span className="flag">{race.countryFlag}</span>
+              <span className="name">{race.raceNameKr}</span>
             </div>
-            
+
             <div className="right">
-              {race.status === 'FINISHED' ? (
+              {race.status === 'FINISHED' && race.winner ? (
                 <>
                   <span className="winner-label">Winner</span>
-                  <span className="winner-name">{race.winner}</span>
+                  <span className="winner-name">{race.winner.nameKr}</span>
                   <ChevronRight size={16} style={{ opacity: 0.5 }} />
                 </>
               ) : (
-                <StatusBadge>D-DAY</StatusBadge>
+                <StatusBadge>UPCOMING</StatusBadge>
               )}
             </div>
           </RaceItem>

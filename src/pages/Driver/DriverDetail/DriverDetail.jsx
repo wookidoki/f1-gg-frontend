@@ -1,146 +1,171 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { 
-  Trophy, Flag, Calendar, Activity, ArrowLeft, BarChart2 
+import {
+  Trophy, Zap, ArrowLeft, Crown, Calendar, Flag, Hash
 } from 'lucide-react';
-import { 
-  Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer 
-} from 'recharts';
+import { getFlagEmoji } from '../../../config';
 
-import { 
-  DetailContainer, BackButton, ProfileHeader, ProfileInfo, 
-  BigNumber, NameSection, StatGrid, StatBox, 
-  ContentSection, ChartContainer, SectionTitle 
-} from './stlye';
+import { useDriverDetail } from './useDriverDetail';
+import {
+  DetailContainer, BackButton, ProfileHeader, ProfileInfo,
+  BigNumber, NameSection, StatGrid, StatBox,
+  ContentSection, SectionTitle
+} from './style';
 
 const DriverDetail = () => {
-  const { id } = useParams(); // URL의 id 부분 (예: /drivers/1)
+  const { code } = useParams();
   const navigate = useNavigate();
 
-  // 실제로는 API로 id에 해당하는 데이터를 불러와야 함. 지금은 Mock Data.
-  // "게임 능력치" 느낌의 데이터 (5점 만점 or 100점 만점)
-  const driverData = {
-    id: 1,
-    name: "Max Verstappen",
-    team: "Red Bull Racing",
-    number: 1,
-    country: "Netherlands",
-    birth: "1997.09.30",
-    color: "#0600EF",
-    stats: {
-      championships: 3,
-      wins: 62,
-      podiums: 111,
-      points: 2986.5
-    },
-    // 육각형 능력치 데이터 (FIFA 게임 스타일)
-    ability: [
-      { subject: '속도 (Pace)', A: 98, fullMark: 100 },
-      { subject: '경험 (Exp)', A: 90, fullMark: 100 },
-      { subject: '공격성 (Agg)', A: 95, fullMark: 100 },
-      { subject: '방어 (Def)', A: 92, fullMark: 100 },
-      { subject: '타이어 관리', A: 88, fullMark: 100 },
-      { subject: '안정성', A: 96, fullMark: 100 },
-    ]
-  };
+  const { driver, loading, error } = useDriverDetail(code);
+
+  if (loading) return <DetailContainer style={{padding:'2rem', color:'white'}}>Loading...</DetailContainer>;
+
+  if (error || !driver) return (
+    <DetailContainer>
+      <h3 style={{color:'white'}}>{error || "Driver Not Found"}</h3>
+      <BackButton onClick={() => navigate(-1)}>뒤로 가기</BackButton>
+    </DetailContainer>
+  );
 
   return (
     <DetailContainer>
       <BackButton onClick={() => navigate(-1)}>
-        <ArrowLeft size={20} /> 뒤로가기
+        <ArrowLeft size={20} /> 전체 목록
       </BackButton>
 
-      {/* 1. 프로필 헤더 섹션 */}
-      <ProfileHeader $teamColor={driverData.color}>
-        <BigNumber>{driverData.number}</BigNumber>
+      <ProfileHeader $teamColor={driver.teamColor}>
+        <BigNumber>{driver.number}</BigNumber>
         <ProfileInfo>
           <NameSection>
-            <h3>{driverData.team}</h3>
-            <h1>{driverData.name}</h1>
+            <h3 style={{ color: driver.teamColor }}>{driver.team}</h3>
+            <h1>{driver.nameKr}</h1>
+            <p style={{ opacity: 0.7, marginTop: '4px' }}>{driver.nameEn}</p>
           </NameSection>
-          
-          <div style={{ display: 'flex', gap: '20px', marginTop: '10px' }}>
-            <span><Flag size={16} /> 네덜란드</span>
-            <span><Calendar size={16} /> {driverData.birth}</span>
+
+          <div style={{ marginTop: '25px', display: 'flex', gap: '40px', alignItems: 'center' }}>
+
+            {/* 현재 순위 */}
+            <div>
+              <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '4px', textTransform:'uppercase' }}>Rank</div>
+              <div style={{ fontSize: '2.8rem', fontWeight: '900', lineHeight: 0.9, display:'flex', alignItems:'center', gap:'10px' }}>
+                {driver.currentRank}
+                {driver.currentRank === 1 && <Crown size={28} color="#f1c40f" fill="#f1c40f" />}
+              </div>
+            </div>
+
+            {/* 포인트 */}
+            <div style={{ paddingLeft: '30px', borderLeft: '1px solid rgba(255,255,255,0.2)' }}>
+              <div style={{ fontSize: '0.85rem', opacity: 0.7 }}>Points</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: '700' }}>
+                {driver.currentPoints} <small style={{fontSize:'0.9rem'}}>PTS</small>
+              </div>
+            </div>
+
+            {/* 시즌 우승 */}
+            <div style={{ paddingLeft: '30px', borderLeft: '1px solid rgba(255,255,255,0.2)' }}>
+              <div style={{ fontSize: '0.85rem', opacity: 0.7 }}>Wins</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: '700', color: driver.currentWins > 0 ? '#f1c40f' : 'inherit' }}>
+                {driver.currentWins > 0 ? driver.currentWins : '-'}
+              </div>
+            </div>
+
           </div>
         </ProfileInfo>
       </ProfileHeader>
 
-      {/* 2. 핵심 스탯 그리드 (우승, 포디움 등) */}
+      {/* 기본 정보 */}
       <StatGrid>
         <StatBox>
-          <Trophy size={24} color="#FFD700" />
-          <div>
-            <span>월드 챔피언</span>
-            <strong>{driverData.stats.championships}회</strong>
-          </div>
+          <Flag size={24} color="#3498db" />
+          <div><span>국적</span><strong>{getFlagEmoji(driver.nationality)} {driver.nationality}</strong></div>
         </StatBox>
         <StatBox>
-          <Flag size={24} color={driverData.color} />
-          <div>
-            <span>그랑프리 우승</span>
-            <strong>{driverData.stats.wins}회</strong>
-          </div>
+          <Calendar size={24} color="#9b59b6" />
+          <div><span>생년월일</span><strong>{driver.dob}</strong></div>
         </StatBox>
         <StatBox>
-          <Activity size={24} color="#2ecc71" />
-          <div>
-            <span>포디움</span>
-            <strong>{driverData.stats.podiums}회</strong>
-          </div>
+          <Hash size={24} color="#e74c3c" />
+          <div><span>카넘버</span><strong>#{driver.number}</strong></div>
         </StatBox>
         <StatBox>
-          <BarChart2 size={24} color="#e10600" />
-          <div>
-            <span>통산 포인트</span>
-            <strong>{driverData.stats.points}</strong>
-          </div>
+          <Zap size={24} color={driver.teamColor} />
+          <div><span>코드</span><strong>{driver.code}</strong></div>
         </StatBox>
       </StatGrid>
 
-      {/* 3. 상세 분석 섹션 (차트 포함) */}
-      <ContentSection>
-        <div className="chart-area">
-          <SectionTitle>
-            <Activity size={20} /> 드라이버 능력치 분석
-          </SectionTitle>
-          <p style={{ opacity: 0.6, fontSize: '0.9rem', marginBottom: '1rem' }}>
-            최근 5경기 데이터 및 시즌 퍼포먼스 기반 AI 분석
-          </p>
-          
-          <ChartContainer>
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="70%" data={driverData.ability}>
-                <PolarGrid stroke="#444" />
-                <PolarAngleAxis dataKey="subject" tick={{ fill: '#ccc', fontSize: 12 }} />
-                <Radar
-                  name={driverData.name}
-                  dataKey="A"
-                  stroke={driverData.color}
-                  strokeWidth={3}
-                  fill={driverData.color}
-                  fillOpacity={0.4}
-                />
-              </RadarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        </div>
-
-        <div className="text-area">
-          <SectionTitle>
-            <Trophy size={20} /> 2024 시즌 코멘트
-          </SectionTitle>
-          <div style={{ lineHeight: '1.6', color: '#ddd' }}>
-            <p style={{ marginBottom: '1rem' }}>
-              <strong>"압도적인 지배자"</strong> <br/>
-              막스 베르스타펜은 이번 시즌에도 RB20의 성능을 극한으로 끌어내며 챔피언십 선두를 달리고 있습니다. 특히 타이어 관리 능력과 예선전에서의 폭발적인 스피드는 타의 추종을 불허합니다.
-            </p>
-            <p>
-              초반 5경기 중 4경기에서 우승을 차지하며 4연속 월드 챔피언을 향해 순항 중입니다. 비록 최근 맥라렌의 추격이 거세지만, 그의 방어 능력은 여전히 최고 수준으로 평가받습니다.
-            </p>
+      {/* 커리어 통계 */}
+      {driver.careerStats && (
+        <ContentSection>
+          <SectionTitle><Trophy size={20}/> 커리어 통계</SectionTitle>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: '900', color: '#f1c40f' }}>{driver.careerStats.championships}</div>
+              <div style={{ fontSize: '0.85rem', opacity: 0.7, marginTop: '4px' }}>월드 챔피언</div>
+            </div>
+            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: '900', color: '#e74c3c' }}>{driver.careerStats.wins}</div>
+              <div style={{ fontSize: '0.85rem', opacity: 0.7, marginTop: '4px' }}>총 우승</div>
+            </div>
+            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: '900', color: '#3498db' }}>{driver.careerStats.seasons}</div>
+              <div style={{ fontSize: '0.85rem', opacity: 0.7, marginTop: '4px' }}>시즌 참가</div>
+            </div>
           </div>
-        </div>
-      </ContentSection>
+        </ContentSection>
+      )}
+
+      {/* 시즌 결과 */}
+      {driver.seasonResults && driver.seasonResults.length > 0 && (
+        <ContentSection>
+          <SectionTitle><Calendar size={20}/> 2024 시즌 결과</SectionTitle>
+          <div style={{ marginTop: '1rem', maxHeight: '400px', overflowY: 'auto' }}>
+            {driver.seasonResults.map((race) => (
+              <div
+                key={race.round}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '1rem',
+                  borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  background: race.position === 1 ? 'rgba(241, 196, 15, 0.1)' : 'transparent'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <span style={{
+                    fontSize: '0.85rem',
+                    opacity: 0.5,
+                    width: '40px'
+                  }}>R{race.round}</span>
+                  <div>
+                    <div style={{ fontWeight: '600' }}>{race.raceNameKr}</div>
+                    <div style={{ fontSize: '0.8rem', opacity: 0.5 }}>{race.date}</div>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{
+                      fontSize: '1.5rem',
+                      fontWeight: '900',
+                      color: race.position === 1 ? '#f1c40f' : race.position <= 3 ? '#2ecc71' : 'inherit'
+                    }}>
+                      P{race.position}
+                    </div>
+                  </div>
+                  <div style={{
+                    background: 'rgba(255,255,255,0.1)',
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    fontSize: '0.85rem'
+                  }}>
+                    +{race.points} pts
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </ContentSection>
+      )}
     </DetailContainer>
   );
 };

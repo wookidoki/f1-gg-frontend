@@ -1,0 +1,282 @@
+[
+  {
+    "driverId": "pia",
+    "code": "PIA",
+    "team": "McLaren",
+    "analysis": {
+      "qualifying_speed_index": 0.404,
+      "race_pace_offset": -0.764,
+      "teammate_comparison": 0.068,
+      "consistency_score": 1.03,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 0.1,
+      "start_reaction_gain": NaN
+    }
+  },
+  {
+    "driverId": "ver",
+    "code": "VER",
+    "team": "Red Bull Racing",
+    "analysis": {
+      "qualifying_speed_index": 0.314,
+      "race_pace_offset": -0.817,
+      "teammate_comparison": -1.087,
+      "consistency_score": 0.973,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 2.2,
+      "start_reaction_gain": 0.5
+    }
+  },
+  {
+    "driverId": "had",
+    "code": "HAD",
+    "team": "Racing Bulls",
+    "analysis": {
+      "qualifying_speed_index": 0.931,
+      "race_pace_offset": 0.197,
+      "teammate_comparison": -0.623,
+      "consistency_score": 1.068,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": -1.7,
+      "start_reaction_gain": 0.2
+    }
+  },
+  {
+    "driverId": "rus",
+    "code": "RUS",
+    "team": "Mercedes",
+    "analysis": {
+      "qualifying_speed_index": 0.481,
+      "race_pace_offset": -0.387,
+      "teammate_comparison": -0.095,
+      "consistency_score": 0.958,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 0.0,
+      "start_reaction_gain": -0.8
+    }
+  },
+  {
+    "driverId": "alb",
+    "code": "ALB",
+    "team": "Williams",
+    "analysis": {
+      "qualifying_speed_index": 2.262,
+      "race_pace_offset": 0.225,
+      "teammate_comparison": 0.065,
+      "consistency_score": 1.199,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 4.8,
+      "start_reaction_gain": 0.4
+    }
+  },
+  {
+    "driverId": "bea",
+    "code": "BEA",
+    "team": "Haas F1 Team",
+    "analysis": {
+      "qualifying_speed_index": 1.479,
+      "race_pace_offset": 0.254,
+      "teammate_comparison": -0.252,
+      "consistency_score": 1.021,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 2.8,
+      "start_reaction_gain": 0.7
+    }
+  },
+  {
+    "driverId": "str",
+    "code": "STR",
+    "team": "Aston Martin",
+    "analysis": {
+      "qualifying_speed_index": 1.98,
+      "race_pace_offset": 0.398,
+      "teammate_comparison": 0.043,
+      "consistency_score": 1.041,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 2.8,
+      "start_reaction_gain": NaN
+    }
+  },
+  {
+    "driverId": "alo",
+    "code": "ALO",
+    "team": "Aston Martin",
+    "analysis": {
+      "qualifying_speed_index": 1.005,
+      "race_pace_offset": 0.403,
+      "teammate_comparison": -0.043,
+      "consistency_score": 0.977,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": -0.6,
+      "start_reaction_gain": -0.3
+    }
+  },
+  {
+    "driverId": "tsu",
+    "code": "TSU",
+    "team": "Red Bull Racing",
+    "analysis": {
+      "qualifying_speed_index": 1.955,
+      "race_pace_offset": 0.263,
+      "teammate_comparison": 1.087,
+      "consistency_score": 1.032,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 1.4,
+      "start_reaction_gain": 0.7
+    }
+  },
+  {
+    "driverId": "oco",
+    "code": "OCO",
+    "team": "Haas F1 Team",
+    "analysis": {
+      "qualifying_speed_index": 1.946,
+      "race_pace_offset": 0.538,
+      "teammate_comparison": 0.252,
+      "consistency_score": 1.024,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 3.1,
+      "start_reaction_gain": 1.0
+    }
+  },
+  {
+    "driverId": "col",
+    "code": "COL",
+    "team": "Alpine",
+    "analysis": {
+      "qualifying_speed_index": 2.291,
+      "race_pace_offset": 0.792,
+      "teammate_comparison": 0.058,
+      "consistency_score": 1.159,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 1.1,
+      "start_reaction_gain": 0.3
+    }
+  },
+  {
+    "driverId": "law",
+    "code": "LAW",
+    "team": "Racing Bulls",
+    "analysis": {
+      "qualifying_speed_index": 1.145,
+      "race_pace_offset": 0.33,
+      "teammate_comparison": 0.623,
+      "consistency_score": 0.982,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": -1.6,
+      "start_reaction_gain": 0.5
+    }
+  },
+  {
+    "driverId": "sai",
+    "code": "SAI",
+    "team": "Williams",
+    "analysis": {
+      "qualifying_speed_index": 0.864,
+      "race_pace_offset": -0.022,
+      "teammate_comparison": -0.065,
+      "consistency_score": 1.077,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 0.3,
+      "start_reaction_gain": 0.3
+    }
+  },
+  {
+    "driverId": "hul",
+    "code": "HUL",
+    "team": "Kick Sauber",
+    "analysis": {
+      "qualifying_speed_index": 1.669,
+      "race_pace_offset": 0.522,
+      "teammate_comparison": -4.072,
+      "consistency_score": 1.2,
+      "incident_risk_pct": 0.26,
+      "overtaking_index": 1.7,
+      "start_reaction_gain": NaN
+    }
+  },
+  {
+    "driverId": "bor",
+    "code": "BOR",
+    "team": "Kick Sauber",
+    "analysis": {
+      "qualifying_speed_index": 2.178,
+      "race_pace_offset": 0.532,
+      "teammate_comparison": 4.072,
+      "consistency_score": 0.966,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 0.2,
+      "start_reaction_gain": NaN
+    }
+  },
+  {
+    "driverId": "ant",
+    "code": "ANT",
+    "team": "Mercedes",
+    "analysis": {
+      "qualifying_speed_index": 1.321,
+      "race_pace_offset": -0.281,
+      "teammate_comparison": 0.095,
+      "consistency_score": 1.068,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": -0.2,
+      "start_reaction_gain": -0.7
+    }
+  },
+  {
+    "driverId": "gas",
+    "code": "GAS",
+    "team": "Alpine",
+    "analysis": {
+      "qualifying_speed_index": 1.777,
+      "race_pace_offset": 0.72,
+      "teammate_comparison": -0.058,
+      "consistency_score": 1.003,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": -1.2,
+      "start_reaction_gain": 0.0
+    }
+  },
+  {
+    "driverId": "nor",
+    "code": "NOR",
+    "team": "McLaren",
+    "analysis": {
+      "qualifying_speed_index": 0.149,
+      "race_pace_offset": -0.782,
+      "teammate_comparison": -0.068,
+      "consistency_score": 0.936,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": -1.9,
+      "start_reaction_gain": -0.5
+    }
+  },
+  {
+    "driverId": "lec",
+    "code": "LEC",
+    "team": "Ferrari",
+    "analysis": {
+      "qualifying_speed_index": 0.697,
+      "race_pace_offset": -0.353,
+      "teammate_comparison": 0.235,
+      "consistency_score": 1.088,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 1.2,
+      "start_reaction_gain": 0.6
+    }
+  },
+  {
+    "driverId": "ham",
+    "code": "HAM",
+    "team": "Ferrari",
+    "analysis": {
+      "qualifying_speed_index": 1.608,
+      "race_pace_offset": -0.066,
+      "teammate_comparison": -0.235,
+      "consistency_score": 0.993,
+      "incident_risk_pct": 0.0,
+      "overtaking_index": 3.2,
+      "start_reaction_gain": 1.1
+    }
+  }
+]

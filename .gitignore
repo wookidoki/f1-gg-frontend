@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Data analysis cache (large files)
+public/data-analysis/cache/
+public/data-analysis/f1_cache/
+*.sqlite
+*.ff1pkl
+
+# Claude
+.claude/
+.claude.json

@@ -5,6 +5,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import { lightTheme, darkTheme } from './styles/theme';
 
 import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer/footer';
 import Home from './pages/Home/Home';
 import Schedule from './pages/Schedule/Schedule'; 
 import Driver from './pages/Driver/Driver';
@@ -35,7 +36,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/drivers" element={<Driver/>} />
-            <Route path="/drivers/:id" element={<DriverDetail/>} />
+            <Route path="/drivers/:code" element={<DriverDetail/>} />
 
             <Route path="/team" element={<Teams/>} />
             <Route path="/teams/:id" element={<TeamDetail/>} />
@@ -46,6 +47,7 @@ function App() {
           </Routes>
         </div>
 
+        <Footer />
       </BrowserRouter>
     </ThemeProvider>
   );

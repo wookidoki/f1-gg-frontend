@@ -4,7 +4,7 @@ import { Sun, Moon, Zap, Calendar, Trophy, User, LogIn, Users, BarChart2 } from 
 import { 
   NavWrapper, NavContent, Logo, MenuList, MenuItem, 
   ActionGroup, ThemeButton, LoginButton 
-} from './stlye'; 
+} from './style';
 
 const Navbar = ({ isDarkMode, toggleTheme }) => { 
     const navigate = useNavigate();
@@ -14,38 +14,47 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
         { id: '/', label: '홈', icon: Zap },
         { id: '/schedule', label: '일정', icon: Calendar },
         { id: '/drivers', label: '드라이버', icon: User },
-        { id: '/team', label: '팀', icon: Users },     
+        { id: '/teams', label: '팀', icon: Users }, // team -> teams (복수형 추천)
         { id: '/standings', label: '순위', icon: Trophy },
-        { id: '/stats', label: '통계', icon: BarChart2 } 
+        { id: '/stats', label: '분석', icon: BarChart2 } // 통계 -> 분석 (더 전문적으로)
     ];
 
     return (
         <NavWrapper>
             <NavContent>
                 <Logo onClick={() => navigate('/')}>
-                    F1<span>.GG</span>
+                    RACE<span>.GG</span>
                 </Logo>
 
                 <MenuList>
-                    {navItems.map((item) => (
-                        <MenuItem 
-                            key={item.id}
-                            onClick={() => navigate(item.id)}
-                            $isActive={location.pathname === item.id}
-                        >
-                            <item.icon size={14} />
-                            {item.label}
-                        </MenuItem>
-                    ))}
+                    {navItems.map((item) => {
+                        // 현재 경로가 해당 메뉴의 ID로 시작하면 활성화 (하위 페이지 포함)
+                        const isActive = location.pathname === item.id || 
+                                       (item.id !== '/' && location.pathname.startsWith(item.id));
+                        
+                        return (
+                            <MenuItem 
+                                key={item.id}
+                                onClick={() => navigate(item.id)}
+                                $isActive={isActive}
+                            >
+                                <item.icon size={16} strokeWidth={2.5} /> {/* 아이콘 두께 조정 */}
+                                <span>{item.label}</span>
+                                {/* 활성화 시 하단 레드 바 효과 (style.js에서 처리) */}
+                                {isActive && <div className="active-bar" />}
+                            </MenuItem>
+                        );
+                    })}
                 </MenuList>
 
                 <ActionGroup>
-                    <ThemeButton onClick={toggleTheme}>
-                        {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                    <ThemeButton onClick={toggleTheme} aria-label="테마 변경">
+                        {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
                     </ThemeButton>
                     
-                    <LoginButton>
-                        <LogIn size={14} /> 로그인
+                    <LoginButton onClick={() => navigate('/login')}>
+                        <LogIn size={16} /> 
+                        <span>로그인</span>
                     </LoginButton>
                 </ActionGroup>
             </NavContent>
