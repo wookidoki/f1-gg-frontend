@@ -23,6 +23,7 @@ import Signup from './pages/Auth/Signup';
 import Favorites from './pages/Favorites/Favorites';
 import Stats from './pages/Stats/Stats';
 import Compare from './pages/Compare/Compare';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -56,6 +57,7 @@ function App() {
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/stats" element={<Stats />} />
               <Route path="/compare" element={<Compare />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
 

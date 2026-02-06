@@ -24,6 +24,31 @@ export const PageTitle = styled.h1`
   }
 `;
 
+export const TabGroup = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+`;
+
+export const Tab = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid ${props => props.$active ? props.theme.colors.primary : props.theme.border};
+  background: ${props => props.$active ? `${props.theme.colors.primary}15` : 'transparent'};
+  color: ${props => props.$active ? props.theme.colors.primary : props.theme.subText};
+
+  &:hover {
+    border-color: ${props => props.theme.colors.primary};
+  }
+`;
+
 export const SelectionGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
