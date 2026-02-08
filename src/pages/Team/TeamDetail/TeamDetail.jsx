@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { API_BASE_URL, getFlagEmoji } from '../../../config';
 import { useFavorite } from '../../../hooks/useFavorite';
+import ShareButton from '../../../components/common/ShareButton/ShareButton';
 
 import {
   DetailContainer, BackButton, HeroSection, TeamLogoLarge,
@@ -60,26 +61,32 @@ const TeamDetail = () => {
         <BackButton onClick={() => navigate(-1)} style={{ marginBottom: 0 }}>
           <ArrowLeft size={20} /> 전체 목록으로
         </BackButton>
-        <button
-          onClick={toggleFavorite}
-          disabled={favLoading}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '10px 20px',
-            borderRadius: '12px',
-            border: isFavorite ? '2px solid #e10600' : '2px solid rgba(255,255,255,0.2)',
-            background: isFavorite ? 'rgba(225, 6, 0, 0.1)' : 'transparent',
-            color: isFavorite ? '#e10600' : 'inherit',
-            fontWeight: '600',
-            cursor: 'pointer',
-            transition: 'all 0.2s'
-          }}
-        >
-          <Heart size={18} fill={isFavorite ? '#e10600' : 'none'} color={isFavorite ? '#e10600' : 'currentColor'} />
-          {isFavorite ? '즐겨찾기 해제' : '즐겨찾기'}
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <ShareButton
+            title={`${teamData?.nameKr} - RACE.GG`}
+            text={`${teamData?.nameKr} 팀 정보를 확인하세요!`}
+          />
+          <button
+            onClick={toggleFavorite}
+            disabled={favLoading}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 20px',
+              borderRadius: '12px',
+              border: isFavorite ? '2px solid #e10600' : '2px solid rgba(255,255,255,0.2)',
+              background: isFavorite ? 'rgba(225, 6, 0, 0.1)' : 'transparent',
+              color: isFavorite ? '#e10600' : 'inherit',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+          >
+            <Heart size={18} fill={isFavorite ? '#e10600' : 'none'} color={isFavorite ? '#e10600' : 'currentColor'} />
+            {isFavorite ? '즐겨찾기 해제' : '즐겨찾기'}
+          </button>
+        </div>
       </div>
 
       {/* 1. 히어로 섹션 (팀 아이덴티티) */}
