@@ -25,12 +25,20 @@ import Stats from './pages/Stats/Stats';
 import Compare from './pages/Compare/Compare';
 import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Profile/Profile';
+import Settings from './pages/Settings/Settings';
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved ? saved === 'dark' : true;
+  });
 
   const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev);
+    setIsDarkMode((prev) => {
+      const newValue = !prev;
+      localStorage.setItem('theme', newValue ? 'dark' : 'light');
+      return newValue;
+    });
   };
 
   return (
@@ -59,6 +67,7 @@ function App() {
               <Route path="/stats" element={<Stats />} />
               <Route path="/compare" element={<Compare />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings isDarkMode={isDarkMode} toggleTheme={toggleTheme} />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

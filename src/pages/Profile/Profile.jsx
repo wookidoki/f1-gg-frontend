@@ -223,7 +223,7 @@ const Profile = () => {
           <ChevronRight size={20} className="arrow" />
         </MenuItem>
 
-        <MenuItem $bg="rgba(52, 152, 219, 0.1)" $color="#3498db">
+        <MenuItem onClick={() => navigate('/settings')} $bg="rgba(52, 152, 219, 0.1)" $color="#3498db">
           <div className="icon">
             <Settings size={20} />
           </div>
