@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { API_BASE_URL, getFlagEmoji } from '../../../config';
 import { useFavorite } from '../../../hooks/useFavorite';
+import { useToast } from '../../../components/common/Toast/Toast';
 import ShareButton from '../../../components/common/ShareButton/ShareButton';
 
 import {
@@ -17,11 +18,23 @@ const TeamDetail = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const season = searchParams.get('season') || '2025';
+  const toast = useToast();
 
   const [teamData, setTeamData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { isFavorite, loading: favLoading, toggleFavorite } = useFavorite('CONSTRUCTOR', id);
+
+  const handleFavorite = async () => {
+    const success = await toggleFavorite();
+    if (success) {
+      if (!isFavorite) {
+        toast.success('즐겨찾기 추가', `${teamData?.nameKr}를 즐겨찾기에 추가했습니다.`);
+      } else {
+        toast.info('즐겨찾기 해제', `${teamData?.nameKr}를 즐겨찾기에서 제거했습니다.`);
+      }
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -67,7 +80,7 @@ const TeamDetail = () => {
             text={`${teamData?.nameKr} 팀 정보를 확인하세요!`}
           />
           <button
-            onClick={toggleFavorite}
+            onClick={handleFavorite}
             disabled={favLoading}
             style={{
               display: 'flex',

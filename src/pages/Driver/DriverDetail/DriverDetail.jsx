@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { getFlagEmoji } from '../../../config';
 import { useFavorite } from '../../../hooks/useFavorite';
+import { useToast } from '../../../components/common/Toast/Toast';
 import ShareButton from '../../../components/common/ShareButton/ShareButton';
 
 import { useDriverDetail } from './useDriverDetail';
@@ -19,9 +20,21 @@ const DriverDetail = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const season = searchParams.get('season') || '2025';
+  const toast = useToast();
 
   const { driver, loading, error } = useDriverDetail(code, season);
   const { isFavorite, loading: favLoading, toggleFavorite } = useFavorite('DRIVER', code);
+
+  const handleFavorite = async () => {
+    const success = await toggleFavorite();
+    if (success) {
+      if (!isFavorite) {
+        toast.success('즐겨찾기 추가', `${driver?.nameKr}를 즐겨찾기에 추가했습니다.`);
+      } else {
+        toast.info('즐겨찾기 해제', `${driver?.nameKr}를 즐겨찾기에서 제거했습니다.`);
+      }
+    }
+  };
 
   if (loading) return <DetailContainer style={{padding:'2rem', color:'white'}}>Loading...</DetailContainer>;
 
@@ -44,7 +57,7 @@ const DriverDetail = () => {
             text={`${driver?.nameKr} 드라이버 정보를 확인하세요!`}
           />
           <button
-            onClick={toggleFavorite}
+            onClick={handleFavorite}
             disabled={favLoading}
             style={{
               display: 'flex',

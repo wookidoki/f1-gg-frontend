@@ -5,6 +5,7 @@ import {
   ArrowLeft, Moon, Sun, Bell, BellOff, Globe, Trash2,
   ChevronRight, Smartphone, Monitor
 } from 'lucide-react';
+import { useToast } from '../../components/common/Toast/Toast';
 
 const PageContainer = styled.div`
   width: 100%;
@@ -177,6 +178,7 @@ const VersionInfo = styled.div`
 
 const Settings = ({ isDarkMode, toggleTheme }) => {
   const navigate = useNavigate();
+  const toast = useToast();
   const [notifications, setNotifications] = useState(() => {
     return localStorage.getItem('notifications') === 'true';
   });
@@ -185,6 +187,7 @@ const Settings = ({ isDarkMode, toggleTheme }) => {
     const newValue = !notifications;
     setNotifications(newValue);
     localStorage.setItem('notifications', String(newValue));
+    toast.success('설정 변경', newValue ? '알림이 활성화되었습니다.' : '알림이 비활성화되었습니다.');
   };
 
   const handleClearCache = () => {
@@ -192,7 +195,7 @@ const Settings = ({ isDarkMode, toggleTheme }) => {
       localStorage.removeItem('favorites_cache');
       localStorage.removeItem('drivers_cache');
       localStorage.removeItem('teams_cache');
-      alert('캐시가 삭제되었습니다.');
+      toast.success('캐시 삭제', '캐시가 삭제되었습니다.');
     }
   };
 
