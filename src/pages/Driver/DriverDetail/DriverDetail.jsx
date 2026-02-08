@@ -7,6 +7,7 @@ import { getFlagEmoji } from '../../../config';
 import { useFavorite } from '../../../hooks/useFavorite';
 import { useToast } from '../../../components/common/Toast/Toast';
 import ShareButton from '../../../components/common/ShareButton/ShareButton';
+import PositionChart from '../../../components/common/Charts/PositionChart';
 
 import { useDriverDetail } from './useDriverDetail';
 import {
@@ -160,7 +161,16 @@ const DriverDetail = () => {
         </ContentSection>
       )}
 
-      {/* 시즌 결과 */}
+      {/* 시즌 결과 그래프 */}
+      {driver.seasonResults && driver.seasonResults.length > 0 && (
+        <PositionChart
+          data={driver.seasonResults}
+          title={`${season} 시즌 순위 변화`}
+          teamColor={driver.teamColor}
+        />
+      )}
+
+      {/* 시즌 결과 목록 */}
       {driver.seasonResults && driver.seasonResults.length > 0 && (
         <ContentSection>
           <SectionTitle><Calendar size={20}/> {season} 시즌 결과</SectionTitle>
