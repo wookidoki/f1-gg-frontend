@@ -70,7 +70,8 @@ const Drivers = () => {
             {[...Array(8)].map((_, i) => <DriverCardSkeleton key={i} />)}
           </>
         ) : (
-        {filteredDrivers.map((driver) => (
+          <>
+          {filteredDrivers.map((driver) => (
           <DriverCard 
             key={driver.code} // 고유 ID 사용 (max_verstappen)
             onClick={() => navigate(`/drivers/${driver.code}?season=${season}`)}
